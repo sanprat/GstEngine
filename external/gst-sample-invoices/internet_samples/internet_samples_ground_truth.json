@@ -1,0 +1,766 @@
+[
+  {
+    "sample_id": 1,
+    "filename": "internet_gst_invoice_01.jpg",
+    "ground_truth": {
+      "gt_parse": {
+        "header": {
+          "invoice_date": "25-09-2020",
+          "address": "2nd Floor,C-Wing,PARAGON CENTRE,PANDURANG BUDHKAR MARG,WORLI,MUMBAI 400030 MH India ",
+          "pan": "AAACH1201R",
+          "amount": "9217.26",
+          "gstin_no": "27AAACH1201R1ZN",
+          "customer_no": "791114435",
+          "order_no": "851893966"
+        },
+        "items": [
+          {
+            "item_desc": "Dell Latitude 3301 CTO"
+          },
+          {
+            "item_desc": "Integrated Intel(R) UHD Graphics 620 for i5-8265U Processor with 8GB Memory,thankyou for buying Delll"
+          },
+          {
+            "item_desc": "8th generation intel core i58265u Processor(4 core,6 MB Cache,1.6 GHz up to 3.90 gHz)\nENERGY STAR Qualified"
+          },
+          {
+            "item_desc": "13.3* HD(1366 * 768 Anti-Glare Non-touch,camera & Microphoine ,WLAN/WWAN,Capable,Black"
+          },
+          {
+            "item_desc": "Palmrest with no security,backlit"
+          },
+          {
+            "item_desc": "Black LCD Cover"
+          },
+          {
+            "item_desc": "Black Bottom Door,WLAN No Autopilot"
+          },
+          {
+            "item_desc": "Dell Application for windows 10"
+          },
+          {
+            "item_desc": "Documents for MUI(English,Khemer,Bahas)"
+          },
+          {
+            "item_desc": "Quick start guide for 3301"
+          },
+          {
+            "item_desc": "India BIS Package Label"
+          },
+          {
+            "item_desc": "System Shipment,Latitude-301 RIN p114G901(India)"
+          },
+          {
+            "item_desc": "ICC and India Countries information"
+          },
+          {
+            "item_desc": "8GB,onboard LPDDR3,2133MHz OS Media Kit Not Included"
+          },
+          {
+            "item_desc": "SSD Bracket"
+          },
+          {
+            "item_desc": "M.2 512GB PCie NVMe Class 35 Solid State Drive"
+          },
+          {
+            "item_desc": "65 Watt AC Adapter"
+          },
+          {
+            "item_desc": "Power Cord for 3min Adapter(IND)"
+          },
+          {
+            "item_desc": "4 cell 52WHR Battery"
+          },
+          {
+            "item_desc": "(INDIA) Dell Pro Backpack 15 PO1520P? Fits most laptops upto 15 *"
+          },
+          {
+            "item_desc": "Intel Core(TM)i5 Processor Label Not EPEAT Registered"
+          },
+          {
+            "item_desc": "wireless 9462 card\nWireless Bluetooth Driver"
+          },
+          {
+            "item_desc": "No Mobile Broadband Card"
+          },
+          {
+            "item_desc": "Dark Grey Backlit Keyboard,English International"
+          },
+          {
+            "item_desc": "windows 10pro 64 bit(English)"
+          },
+          {
+            "item_desc": "No Software"
+          },
+          {
+            "item_desc": "Dell Developed Recovery Environment"
+          },
+          {
+            "item_desc": "No Anti-Virus Software"
+          },
+          {
+            "item_desc": "No installaion service required "
+          },
+          {
+            "item_desc": "(CS-1)ProDeploy Deploymen Dell Client System Configuration \nSI EMEA MOD INFO CFI ROUTING\nProDeploy ,Factoy install,config services\nIntegration ,Information\nSI,MOD,INFO , SO IMAGES ,SI INJECT\n4yr keep your hard drive\nProDeploy Dell Client P Deployment\nProDeploy Dell Client PC Deployment \nProdeploy Deployment Dell Client PC\nNot selected in this ocnfiguration",
+            "item_net_worth": "51,207"
+          }
+        ],
+        "summary": {}
+      }
+    }
+  },
+  {
+    "sample_id": 2,
+    "filename": "internet_gst_invoice_02.jpg",
+    "ground_truth": {
+      "gt_parse": {
+        "header": {
+          "invoice_no": "VST/783",
+          "invoice_date": "12-07-2022",
+          "po_number": "13542310381",
+          "amount": "7174.00",
+          "sgst": "547.20",
+          "cgst": "547.20",
+          "gstin_no": "29AAACH1201R2Z",
+          "grand_total": "7174.00"
+        },
+        "items": [
+          {
+            "item_desc": "4U Rack 500D \nmodel : With Accessories\nSerial:"
+          }
+        ],
+        "summary": {}
+      }
+    }
+  },
+  {
+    "sample_id": 3,
+    "filename": "internet_gst_invoice_03.jpg",
+    "ground_truth": {
+      "gt_parse": {
+        "header": {
+          "invoice_no": "AMC/2122/FA0019",
+          "invoice_date": "28-09-2021",
+          "address": "One World Center,Tower-17th floor,Jupiter mill compound,841,Senapati Bapat Marg,Elephistone Road,Mumbai 400013",
+          "pan": "AAACB6134D",
+          "amount": "252495",
+          "gstin_no": "27AAACH1201R1ZN",
+          "hsn_code": "87032291",
+          "grand_total": "29922"
+        },
+        "items": [
+          {
+            "item_desc": "Sale of Old Car of Lalit Kumar Apparao Kodi"
+          }
+        ],
+        "summary": {}
+      }
+    }
+  },
+  {
+    "sample_id": 4,
+    "filename": "internet_gst_invoice_04.jpg",
+    "ground_truth": {
+      "gt_parse": {
+        "header": {
+          "invoice_no": "HDA/SAVS/21/1145",
+          "invoice_date": "16/10/2021",
+          "address": "7TH FLOOR,BIRLA CENTURAIL PANDURANG BHUDKAR ROAD,WORLI MUMBAI ,400030,MAHARASHTRA INDIA",
+          "pan": "AAACH1201R",
+          "state": "maharashtra",
+          "taxable_value": "929901.00",
+          "sgst": "130186.01",
+          "cgst": "130186.01",
+          "igst": "0.00",
+          "gstin_no": "27AAACH1201R1ZN",
+          "hsn_code": "87032291",
+          "total_price": "971280.00"
+        },
+        "items": [
+          {
+            "item_desc": "VEHICLE SALES",
+            "item_qty": "1.00",
+            "item_net_price": "971280.00"
+          }
+        ],
+        "summary": {
+          "total_net_worth": "1361840.00"
+        }
+      }
+    }
+  },
+  {
+    "sample_id": 5,
+    "filename": "internet_gst_invoice_05.jpg",
+    "ground_truth": {
+      "gt_parse": {
+        "header": {
+          "invoice_no": "227/2019-2020",
+          "invoice_date": "5th June 2019",
+          "address": "Gandhi Peace Centre,Khandagiri,bhubaneshwar Odisha",
+          "pan": "AACPK9036G",
+          "state": "Maharashtra",
+          "amount": "13,81,105.16",
+          "igst": "13,81,105.16",
+          "gstin_no": "27AAACH1201R1ZN"
+        },
+        "items": [
+          {
+            "item_desc": "Civil work"
+          },
+          {
+            "item_desc": "Carpentry Work"
+          },
+          {
+            "item_desc": "Electrical Work"
+          },
+          {
+            "item_desc": "POP and Gypsum ceiling"
+          },
+          {
+            "item_desc": "Painting and melamine polishing"
+          },
+          {
+            "item_desc": "Glass Rooming System"
+          },
+          {
+            "item_desc": "HVAC"
+          },
+          {
+            "item_desc": "miscellenieous Item",
+            "item_net_price": "18.00"
+          }
+        ],
+        "summary": {
+          "total_net_worth": "90,53,911.00"
+        }
+      }
+    }
+  },
+  {
+    "sample_id": 6,
+    "filename": "internet_gst_invoice_06.jpg",
+    "ground_truth": {
+      "gt_parse": {
+        "header": {
+          "invoice_no": "MHAR2425390036",
+          "invoice_date": "10-04-2024",
+          "address": "Post Office Post Bag no 1,Yamanapur Village-Belgavi Works,Hindalco Industries Limited,Belgavi 590010",
+          "pan": "AAACH1201R",
+          "igst": "64,800.",
+          "gstin_no": "29AAACH1201R2Z1",
+          "hsn_code": "998713"
+        },
+        "items": [
+          {
+            "item_desc": "AMC for IBM Servers and lape library as per annexure atttached"
+          },
+          {
+            "item_desc": "AMC for IBM Servers and lape library as per annexure atttached"
+          },
+          {
+            "item_desc": "AMC for IBM Servers and lape library as per annexure atttached"
+          },
+          {
+            "item_desc": "AMC for IBM Servers and lape library as per annexure atttached",
+            "item_qty": "1",
+            "item_net_price": "36,000.00"
+          }
+        ],
+        "summary": {
+          "total_net_worth": "0.00"
+        }
+      }
+    }
+  },
+  {
+    "sample_id": 7,
+    "filename": "internet_gst_invoice_07.jpg",
+    "ground_truth": {
+      "gt_parse": {
+        "header": {
+          "invoice_date": "10-04-2024",
+          "address": "Post Office Post Bag no 1,Yamanapur Village-Belgavi Works,Hindalco Industries Limited,Belgavi 590010",
+          "pan": "AACL5292L",
+          "gstin_no": "27AACL5292L1Z4",
+          "hsn_code": "998313",
+          "order_no": "13542319324",
+          "grand_total": "4"
+        },
+        "items": [
+          {
+            "item_desc": "AMC for IBM Servers and tape library as per annexure attached"
+          },
+          {
+            "item_desc": "AMC for IBM Servers and tape library as per annexure attached"
+          },
+          {
+            "item_desc": "AMC for IBM Servers and tape library as per annexure attached"
+          },
+          {
+            "item_desc": "AMC for IBM Servers and tape library as per annexure attached",
+            "item_qty": "1`"
+          }
+        ],
+        "summary": {}
+      }
+    }
+  },
+  {
+    "sample_id": 8,
+    "filename": "internet_gst_invoice_08.jpg",
+    "ground_truth": {
+      "gt_parse": {
+        "header": {
+          "igst": "64,800.00",
+          "grand_total": "424,800.00"
+        },
+        "items": [],
+        "summary": {
+          "total_net_worth": "3,60,000.00"
+        }
+      }
+    }
+  },
+  {
+    "sample_id": 9,
+    "filename": "internet_gst_invoice_09.jpg",
+    "ground_truth": {
+      "gt_parse": {
+        "header": {
+          "invoice_no": "1410515599",
+          "invoice_date": "25/09/2020",
+          "address": "2nd Floor,C-Wing,PARAGON CENTRE,PANDURANG BUDHKAR MARG,WORLI,MUMBAI 400030 MH India ",
+          "pan": "AAACH1201R",
+          "gstin_no": "27AAACH1201R1ZN",
+          "customer_no": "791114435",
+          "order_no": "851893966"
+        },
+        "items": [],
+        "summary": {}
+      }
+    }
+  },
+  {
+    "sample_id": 10,
+    "filename": "internet_gst_invoice_10.jpg",
+    "ground_truth": {
+      "gt_parse": {
+        "header": {
+          "amount": "51,207.00",
+          "igst": "9217.26",
+          "total_value": "60,424.26"
+        },
+        "items": [
+          {
+            "item_desc": "Custom Configuration"
+          },
+          {
+            "item_desc": "1Y Carry in service"
+          },
+          {
+            "item_desc": "1Y Basic Onsite Service Upgrade"
+          },
+          {
+            "item_desc": "Y2-4 Basic Onsite Service Extension",
+            "item_qty": "1"
+          }
+        ],
+        "summary": {}
+      }
+    }
+  },
+  {
+    "sample_id": 11,
+    "filename": "internet_gst_invoice_11.jpg",
+    "ground_truth": {
+      "gt_parse": {
+        "header": {
+          "invoice_no": "2421542444",
+          "invoice_date": "31/05/2019",
+          "address": "SARADAR PATEL NEW DOMESTIC BLDG,SARDAR NAGAR,AHMEDABAD-382475",
+          "pan": "AACCG2599K",
+          "state": "27",
+          "amount": "2027.00",
+          "gstin_no": "27AAACK4409J1ZK",
+          "total_price": "1863.00"
+        },
+        "items": [
+          {
+            "item_desc": "Domestic/International Scheduled Air transport services of passengers"
+          }
+        ],
+        "summary": {
+          "total_net_worth": "2116.00"
+        }
+      }
+    }
+  },
+  {
+    "sample_id": 12,
+    "filename": "internet_gst_invoice_12.jpg",
+    "ground_truth": {
+      "gt_parse": {
+        "header": {
+          "invoice_no": "10028068",
+          "invoice_date": "04-JULY-2022",
+          "address": "PLOT NO 59,SHARDA NIVAS ,OPP MINORIT SUBHASH NAGAR MAIN ROAD BELAGAVI ,KARNATKA,INDIA- 590010",
+          "gstin_no": "29BXLPK9082K1Zl"
+        },
+        "items": [
+          {
+            "item_desc": "31623000035\nMOUNT:TYPE:RACK,MFR P/N:WM-4-550400-WLD-Z6 MFR:\nNETRACK,MATERIAL:STEEL,WIDTH:550 MM,LENGTH:400MM,MOUTNING METHOD:WALL ,HEIGHT:258 MM,STANDARD:DIN 41494,UL,USEFUL HEIGHT;4U,WITH ALL ACCESSORIES",
+            "item_qty": "2.000",
+            "item_net_price": "3040.00"
+          }
+        ],
+        "summary": {
+          "total_net_worth": "6,080.00"
+        }
+      }
+    }
+  },
+  {
+    "sample_id": 13,
+    "filename": "internet_gst_invoice_13.jpg",
+    "ground_truth": {
+      "gt_parse": {
+        "header": {
+          "amount": "79,042.60",
+          "taxable_value": "2,40,714.69",
+          "sgst": "39,521.30",
+          "cgst": "39,521.30",
+          "hsn_code": "84137010",
+          "total_value": "9,64,438.43"
+        },
+        "items": [],
+        "summary": {}
+      }
+    }
+  },
+  {
+    "sample_id": 14,
+    "filename": "internet_gst_invoice_14.jpg",
+    "ground_truth": {
+      "gt_parse": {
+        "header": {
+          "invoice_no": "MH0119200309",
+          "invoice_date": "22-09-2020",
+          "address": "HINDALCO INDUSTRIES LTD.\nB-Wing 1st floor, Ahura Centre , Mahakali Caves Road\nAndheri(E),MUMBAI MAHARASHTRA-400093",
+          "pan": "AAAACB9318D",
+          "state": "AACH1201R",
+          "amount": "39,502.54",
+          "sgst": "5,180.87",
+          "cgst": "5,180.87",
+          "gstin_no": "27AAAACB9318D12W",
+          "hsn_code": "8471",
+          "customer_id": "HIL0031",
+          "grand_total": "67,927.00"
+        },
+        "items": [
+          {
+            "item_desc": "BEING LAPTOP TRF TO HINDALCO-ASWANI TIBRAWAL"
+          },
+          {
+            "item_desc": "BEING LAPTOP TRF TO HINDALCO- SANJIT DAS"
+          },
+          {
+            "item_desc": "BEING LAPTOP TRF TO HINDALCO- SALMAN HUSSAIN"
+          }
+        ],
+        "summary": {
+          "total_net_worth": "57,565.26"
+        }
+      }
+    }
+  },
+  {
+    "sample_id": 15,
+    "filename": "internet_gst_invoice_15.jpg",
+    "ground_truth": {
+      "gt_parse": {
+        "header": {
+          "invoice_no": "873100",
+          "invoice_date": "22/05/2020",
+          "amount": "Rs.700.00"
+        },
+        "items": [
+          {
+            "item_desc": "Shared Hosting"
+          },
+          {
+            "item_desc": "Late Fee",
+            "item_qty": "1",
+            "item_net_price": "Rs.700.00"
+          }
+        ],
+        "summary": {
+          "total_net_worth": "89,600.00"
+        }
+      }
+    }
+  },
+  {
+    "sample_id": 16,
+    "filename": "internet_gst_invoice_16.jpg",
+    "ground_truth": {
+      "gt_parse": {
+        "header": {
+          "invoice_date": "25/05/2020",
+          "amount": "Rs.1,250.00"
+        },
+        "items": [
+          {
+            "item_desc": "shared Hosting"
+          },
+          {
+            "item_desc": "LateFee",
+            "item_qty": "1",
+            "item_net_price": "Rs.1,250.00"
+          }
+        ],
+        "summary": {
+          "total_net_worth": "79,250.00"
+        }
+      }
+    }
+  },
+  {
+    "sample_id": 17,
+    "filename": "internet_gst_invoice_17.jpg",
+    "ground_truth": {
+      "gt_parse": {
+        "header": {
+          "invoice_no": "873104",
+          "invoice_date": "22/05/2020",
+          "amount": "Rs. 780.00"
+        },
+        "items": [
+          {
+            "item_desc": "Shared Hosting "
+          },
+          {
+            "item_desc": "LateFee",
+            "item_qty": "1",
+            "item_net_price": "Rs. 780.00"
+          }
+        ],
+        "summary": {
+          "total_net_worth": "48,780.00"
+        }
+      }
+    }
+  },
+  {
+    "sample_id": 18,
+    "filename": "internet_gst_invoice_18.jpg",
+    "ground_truth": {
+      "gt_parse": {
+        "header": {
+          "invoice_no": "873102",
+          "invoice_date": "22/05/2020",
+          "amount": "Rs.980.00"
+        },
+        "items": [
+          {
+            "item_desc": "Shared Hosting"
+          },
+          {
+            "item_desc": "LateFee",
+            "item_qty": "1",
+            "item_net_price": "Rs.980.00"
+          }
+        ],
+        "summary": {
+          "total_net_worth": "69,524.00"
+        }
+      }
+    }
+  },
+  {
+    "sample_id": 19,
+    "filename": "internet_gst_invoice_19.jpg",
+    "ground_truth": {
+      "gt_parse": {
+        "header": {
+          "invoice_no": "071JDLHQE1122000",
+          "invoice_date": "24-nov-2022",
+          "amount": "4189",
+          "taxable_value": "3800",
+          "sgst": "96",
+          "cgst": "96",
+          "gstin_no": "07ABECS95801ZE",
+          "hsn_code": "996425"
+        },
+        "items": [
+          {
+            "item_desc": "Air Travel and related charges"
+          },
+          {
+            "item_desc": "Airport Charges"
+          },
+          {
+            "item_desc": "others "
+          },
+          {
+            "item_desc": "Grand Total"
+          }
+        ],
+        "summary": {
+          "total_net_worth": "389"
+        }
+      }
+    }
+  },
+  {
+    "sample_id": 20,
+    "filename": "internet_gst_invoice_20.jpg",
+    "ground_truth": {
+      "gt_parse": {
+        "header": {
+          "invoice_no": "12",
+          "invoice_date": "06-may-2021",
+          "address": "Address:House No.1,Kola road ,Rajgarh,Madhya Pradesh.",
+          "amount": "7997.24",
+          "gstin_no": "23KM4589012B1ZS",
+          "hsn_code": "841391"
+        },
+        "items": [
+          {
+            "item_desc": "SPV MODULES 24V 320W POLY"
+          },
+          {
+            "item_desc": "SPV MODULES 24V 320W POLY"
+          },
+          {
+            "item_desc": "3 HP Capacity Solar Iron Structure"
+          },
+          {
+            "item_desc": "3 HP Capacity Solar Iron Structure"
+          },
+          {
+            "item_desc": "2 HP Capacity Solar Iron Structure"
+          },
+          {
+            "item_desc": "2 HP Capacity Solar Iron Structure"
+          },
+          {
+            "item_desc": "BOS 5HP PSMP @30 MTR"
+          },
+          {
+            "item_desc": "BOS 5 HP PSMP @50 MTR"
+          },
+          {
+            "item_desc": "DC Submersible Pumps 5 HP 50 MTR Head"
+          },
+          {
+            "item_desc": "DC Submersible Pumps 5 HP 50 MTR Head"
+          },
+          {
+            "item_desc": "SPV MODULES 24V 335W POLY"
+          },
+          {
+            "item_desc": "3 HP Capacity Solar Iron Structure"
+          },
+          {
+            "item_desc": "BOS 3HP PSMP @30 MTR",
+            "item_qty": "1 SET",
+            "item_net_price": "7,997.24"
+          }
+        ],
+        "summary": {}
+      }
+    }
+  },
+  {
+    "sample_id": 21,
+    "filename": "internet_gst_invoice_21.jpg",
+    "ground_truth": {
+      "gt_parse": {
+        "header": {
+          "amount": "41,303.02",
+          "cgst": "39,521.30",
+          "hsn_code": "84137010",
+          "total_value": "9,64,438.43"
+        },
+        "items": [
+          {
+            "item_desc": "DC Submersile Pumpd 3 HP 30 MTR Head",
+            "item_net_price": "36,934.54"
+          },
+          {
+            "item_desc": "SPV MODULES 24V 335W POLY",
+            "item_qty": "9 Nos.",
+            "item_net_price": "6,554.59"
+          },
+          {
+            "item_desc": "3 HP Capacity Solar Iron Structure",
+            "item_qty": "1 SET",
+            "item_net_price": "18,353.39"
+          },
+          {
+            "item_desc": "BOS 3 HP PSMP @70 MTR",
+            "item_qty": "1 SET\n",
+            "item_net_price": "11,834.51"
+          },
+          {
+            "item_desc": "DC Submersible Pumps 3 HP 70 MTR Head",
+            "item_net_price": "36,376.56"
+          },
+          {
+            "item_desc": "SPV MODULES 24V 320W POLY",
+            "item_qty": "15 Nos.",
+            "item_net_price": "6,048"
+          },
+          {
+            "item_desc": "3 HP Capacity Solar iron Structure",
+            "item_net_price": "18,178.98"
+          },
+          {
+            "item_desc": "2 HP Capacity Solar Iron Structure ",
+            "item_qty": "1 Nos.",
+            "item_net_price": "12,740.00"
+          },
+          {
+            "item_desc": "BOS 5 HP PSMP @100MTR",
+            "item_qty": "1 SET",
+            "item_net_price": "18,722.68"
+          },
+          {
+            "item_desc": "DC Subermersible Pumps 5 HP 100 MTE Head",
+            "item_qty": "1 Nos.",
+            "item_net_price": "41,303.02"
+          }
+        ],
+        "summary": {}
+      }
+    }
+  },
+  {
+    "sample_id": 22,
+    "filename": "internet_gst_invoice_22.jpg",
+    "ground_truth": {
+      "gt_parse": {
+        "header": {
+          "invoice_no": "RV190101028995",
+          "invoice_date": "18-03-2020",
+          "address": "2nd Floor,C-Wing,Paragon Centre Pandurang Budhkar Marg,Worli MUMBAI 400030",
+          "pan": "AABC13372H",
+          "gstin_no": "27AAACH1201R1ZN",
+          "total_value": "25,95,410.00"
+        },
+        "items": [
+          {
+            "item_desc": "NoteBook TP E490 15 8G 10E"
+          },
+          {
+            "item_desc": "CASE BO Lenovo 15.6in Basic Backpack",
+            "item_qty": "53"
+          }
+        ],
+        "summary": {}
+      }
+    }
+  }
+]

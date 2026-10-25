@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Tax Invoice - ADI/SRV/2024-25/118</title>
+<style>
+    @page { size: A4; margin: 12mm; }
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        color: #1f2937;
+        margin: 0;
+        padding: 20px;
+        background: #f9fafb;
+    }
+    .invoice-card {
+        max-width: 860px;
+        margin: 0 auto;
+        background: #ffffff;
+        border: 1px solid #d1d5db;
+        border-radius: 6px;
+        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+        overflow: hidden;
+    }
+    .header-bar {
+        background: #4338ca;
+        color: #ffffff;
+        padding: 16px 24px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .header-bar h1 { margin: 0; font-size: 20px; letter-spacing: 0.5px; }
+    .header-bar p { margin: 4px 0 0; font-size: 11px; opacity: 0.9; }
+    .section-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        border-bottom: 1px solid #e5e7eb;
+    }
+    .section-box { padding: 14px 20px; }
+    .section-box.border-right { border-right: 1px solid #e5e7eb; }
+    .section-title {
+        font-size: 10px;
+        font-weight: 700;
+        text-transform: uppercase;
+        color: #4338ca;
+        margin-bottom: 6px;
+        letter-spacing: 0.5px;
+    }
+    .company-title { font-size: 14px; font-weight: 700; color: #111827; margin: 0 0 4px; }
+    .text-sm { font-size: 11px; line-height: 1.45; color: #4b5563; margin: 0 0 3px; }
+    .badge {
+        display: inline-block;
+        padding: 2px 6px;
+        font-size: 10px;
+        font-weight: 600;
+        background: #eef2ff;
+        color: #4338ca;
+        border-radius: 4px;
+    }
+    .meta-bar {
+        background: #f8fafc;
+        padding: 10px 20px;
+        border-bottom: 1px solid #e5e7eb;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+    }
+    .meta-item { font-size: 11px; }
+    .meta-item span { display: block; font-size: 9px; text-transform: uppercase; color: #6b7280; }
+    .meta-item strong { font-size: 12px; color: #111827; }
+    table.items-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 11px;
+    }
+    table.items-table th {
+        background: #4338ca;
+        color: #ffffff;
+        padding: 8px 10px;
+        font-weight: 600;
+        font-size: 10px;
+        text-transform: uppercase;
+    }
+    table.items-table td {
+        padding: 8px 10px;
+        border-bottom: 1px solid #e5e7eb;
+        vertical-align: middle;
+    }
+    table.items-table tr:nth-child(even) { background: #f9fafb; }
+    .totals-grid {
+        display: grid;
+        grid-template-columns: 1.2fr 1fr;
+        border-bottom: 1px solid #e5e7eb;
+    }
+    .totals-box { padding: 16px 20px; }
+    .calc-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 4px 0;
+        font-size: 11px;
+        color: #374151;
+    }
+    .calc-row.grand-total {
+        background: #4338ca;
+        color: #ffffff;
+        padding: 8px 12px;
+        border-radius: 4px;
+        font-size: 13px;
+        font-weight: 700;
+        margin-top: 8px;
+    }
+    .footer-section {
+        padding: 14px 20px;
+        display: flex;
+        justify-content: space-between;
+        font-size: 10px;
+        color: #6b7280;
+        background: #fafafa;
+    }
+    @media print {
+        body { background: #ffffff; padding: 0; }
+        .invoice-card { box-shadow: none; border: none; }
+    }
+</style>
+</head>
+<body>
+
+<div class="invoice-card">
+    <!-- Header -->
+    <div class="header-bar">
+        <div>
+            <h1>TAX INVOICE</h1>
+            <p>Services Tax Invoice (SAC Codes) &bull; ORIGINAL FOR RECIPIENT</p>
+        </div>
+        <div style="text-align: right;">
+            <div class="badge">Place of Supply: 33-Tamil Nadu</div>
+            <p style="margin-top: 4px;">Reverse Charge: No</p>
+        </div>
+    </div>
+
+    
+
+    <!-- Seller / Buyer -->
+    <div class="section-grid">
+        <div class="section-box border-right">
+            <div class="section-title">Supplier / Registered Entity</div>
+            <div class="company-title">Aura Digital Innovations LLP</div>
+            <p class="text-sm">Level 8, Cyber City Tower C, DLF Phase 2</p>
+            <p class="text-sm">Gurugram, Haryana - 122002 (State Code: 06)</p>
+            <p class="text-sm"><strong>GSTIN:</strong> 06AALFA5532P1ZT | <strong>PAN:</strong> AALFA5532P</p>
+        </div>
+        <div class="section-box">
+            <div class="section-title">Billed To (Recipient / Customer)</div>
+            <div class="company-title">Skyline Retail Enterprises Private Limited</div>
+            <p class="text-sm">Prestige Polygon, 6th Floor, Anna Salai, Teynampet</p>
+            <p class="text-sm">Chennai, Tamil Nadu - 600035 (State Code: 33)</p>
+            <p class="text-sm"><strong>GSTIN / UIN:</strong> 33AAECS8844K1ZR | <strong>PAN:</strong> AAECS8844K</p>
+        </div>
+    </div>
+
+    <!-- Metadata Bar -->
+    <div class="meta-bar">
+        <div class="meta-item">
+            <span>Invoice Number</span>
+            <strong>ADI/SRV/2024-25/118</strong>
+        </div>
+        <div class="meta-item">
+            <span>Invoice Date</span>
+            <strong>05-Sep-2024</strong>
+        </div>
+        <div class="meta-item">
+            <span>Payment Due Date</span>
+            <strong>20-Sep-2024</strong>
+        </div>
+        <div class="meta-item">
+            <span>Reference / PO No</span>
+            <strong>PRJ-CLOUD-AI-902</strong>
+        </div>
+    </div>
+
+    <!-- Line Items Table -->
+    <table class="items-table">
+        <thead>
+            <tr>
+                <th style="width: 30px;">#</th>
+                <th>Item Description</th>
+                <th style="text-align: center;">HSN/SAC</th>
+                <th>Qty</th><th>Rate</th><th>Disc</th><th>Taxable</th><th>IGST</th><th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+        <tr>
+            <td style="text-align:center;">1</td>
+            <td><strong>Enterprise Cloud Architecture Consulting & Microservices Modernization</strong></td>
+            <td style="text-align:center;">998313</td>
+            
+                <td style="text-align:right;">120 HRS</td>
+                <td style="text-align:right;">₹3,500.00</td>
+                <td style="text-align:right;">-</td>
+                <td style="text-align:right; font-weight:600;">₹420,000.00</td>
+                <td style="text-align:right;">₹75,600.00 (18%)</td>
+                <td style="text-align:right; font-weight:bold;">₹495,600.00</td>
+            
+        </tr>
+        
+        <tr>
+            <td style="text-align:center;">2</td>
+            <td><strong>AuraCommerce AI SaaS Platform - Annual Enterprise License (Tier 2)</strong></td>
+            <td style="text-align:center;">998314</td>
+            
+                <td style="text-align:right;">1 YR</td>
+                <td style="text-align:right;">₹250,000.00</td>
+                <td style="text-align:right;">₹25,000.00</td>
+                <td style="text-align:right; font-weight:600;">₹225,000.00</td>
+                <td style="text-align:right;">₹40,500.00 (18%)</td>
+                <td style="text-align:right; font-weight:bold;">₹265,500.00</td>
+            
+        </tr>
+        
+        <tr>
+            <td style="text-align:center;">3</td>
+            <td><strong>Custom Omnichannel ERP & Payment Gateway Integration Services</strong></td>
+            <td style="text-align:center;">998315</td>
+            
+                <td style="text-align:right;">1 LOT</td>
+                <td style="text-align:right;">₹140,000.00</td>
+                <td style="text-align:right;">-</td>
+                <td style="text-align:right; font-weight:600;">₹140,000.00</td>
+                <td style="text-align:right;">₹25,200.00 (18%)</td>
+                <td style="text-align:right; font-weight:bold;">₹165,200.00</td>
+            
+        </tr>
+        
+        <tr>
+            <td style="text-align:center;">4</td>
+            <td><strong>24x7 Mission-Critical SLA & Production Incident Response Retainer</strong></td>
+            <td style="text-align:center;">998319</td>
+            
+                <td style="text-align:right;">1 MTH</td>
+                <td style="text-align:right;">₹65,000.00</td>
+                <td style="text-align:right;">-</td>
+                <td style="text-align:right; font-weight:600;">₹65,000.00</td>
+                <td style="text-align:right;">₹11,700.00 (18%)</td>
+                <td style="text-align:right; font-weight:bold;">₹76,700.00</td>
+            
+        </tr>
+        
+        </tbody>
+    </table>
+
+    <!-- Totals & Bank Details -->
+    <div class="totals-grid">
+        <div class="totals-box border-right">
+            <div class="section-title">Amount in Words</div>
+            <p style="font-weight: 600; color: #4338ca; font-size: 11px; margin-bottom: 12px;">Rupees Ten Lakh Three Thousand Only</p>
+
+            <div class="section-title">Bank Remittance Details</div>
+            <p class="text-sm"><strong>Bank:</strong> ICICI Bank Ltd</p>
+            <p class="text-sm"><strong>A/C Name:</strong> Aura Digital Innovations LLP</p>
+            <p class="text-sm"><strong>A/C Number:</strong> 002105019842 (Current A/C)</p>
+            <p class="text-sm"><strong>IFSC Code:</strong> ICIC0000021 &bull; <strong>Branch:</strong> Cyber City Branch, Gurugram</p>
+        </div>
+        <div class="totals-box">
+            <div class="calc-row">
+                <span>Taxable Value:</span>
+                <strong>₹850,000.00</strong>
+            </div>
+            
+            <div class="calc-row">
+                <span>Integrated Tax (IGST):</span>
+                <span>₹153,000.00</span>
+            </div>
+            
+            <div class="calc-row">
+                <span>Total Tax Amount:</span>
+                <strong>₹153,000.00</strong>
+            </div>
+            <div class="calc-row">
+                <span>Round Off:</span>
+                <span>₹0.00</span>
+            </div>
+            <div class="calc-row grand-total">
+                <span>GRAND TOTAL:</span>
+                <span>₹1,003,000.00</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer-section">
+        <div>
+            <strong>Terms & Conditions:</strong>
+            <p style="margin: 2px 0;">Subject to local jurisdiction. Computer generated invoice requiring no physical signature.</p>
+        </div>
+        <div style="text-align: right;">
+            <strong>For Aura Digital Innovations LLP</strong>
+            <p style="margin: 4px 0 0; color: #10b981; font-weight: 600;">✓ Digitally Signed & Verified</p>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
