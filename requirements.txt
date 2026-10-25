@@ -1,0 +1,6 @@
+pymupdf>=1.24
+transformers>=4.44
+tokenizers>=0.20
+torch>=2.1
+numpy>=1.26
+accelerate>=0.30

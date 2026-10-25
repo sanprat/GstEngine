@@ -1,0 +1,20 @@
+__pycache__/
+*.pyc
+venv/
+*.log
+.DS_Store
+invoices/ocr_out/
+.venv/
+*.db
+
+# Private invoice data — never commit real invoices or derived labels
+data/gst_smoke_dataset.jsonl
+data/gst_smoke_stats.json
+invoices/ocr_batch_*.json
+invoices/images/IMG*.jpg
+invoices/pdf/*
+!invoices/pdf/GST_Invoice_*.pdf
+HANDOFF.md
+current_handoff.md
+.agent_memory/
+smoke_run_*/eval_predictions.jsonl
