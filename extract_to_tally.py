@@ -57,7 +57,13 @@ def span_text(record, a, b):
     return " ".join(record["words"][i] for i in range(a, b + 1)).strip()
 
 def clean_amount(s: str) -> float:
-    return float(s.replace("₹", "").replace(",", "").strip())
+    m = re.search(r"[-+]?\d+(?:,\d+)*(?:\.\d+)?", str(s))
+    if m:
+        try:
+            return float(m.group(0).replace(",", ""))
+        except ValueError:
+            pass
+    return 0.0
 
 HEADER_STOPWORDS = {"No","Description","Unit","MRP/RSP","HSN","Qty","Product","Rate","Disc.",
                     "Taxable","Amt.","CGST","S/UT","GST","Cess","Total","Sl.","Item","&",

@@ -87,7 +87,7 @@ def validate_gstin(gstin: str) -> dict:
     g = (gstin or "").strip().upper().replace(" ", "")
 
     if not re.fullmatch(r"[0-9A-Z]{15}", g):
-        errors.append(f"FORMAT: must be exactly 15 alphanumeric chars, got {len(g or 0)}")
+        errors.append(f"FORMAT: must be exactly 15 alphanumeric chars, got {len(g)}")
         return {"valid": False, "errors": errors, "info": info}
 
     state = g[:2]
