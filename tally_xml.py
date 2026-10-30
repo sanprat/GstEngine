@@ -17,13 +17,22 @@ from xml.sax.saxutils import escape
 
 
 def _d(date_str: str) -> str:
-    """Tally XML date format: YYYYMMDD."""
-    for fmt in ("%d-%m-%Y", "%d/%m/%Y", "%Y-%m-%d", "%d-%b-%Y", "%d-%m-%y"):
+    """Tally XML date format: YYYYMMDD. Falls back to today's date if empty or unparseable."""
+    if not date_str or not str(date_str).strip():
+        return datetime.now().strftime("%Y%m%d")
+    s = str(date_str).strip()
+    for fmt in ("%d-%m-%Y", "%d/%m/%Y", "%Y-%m-%d", "%d-%b-%Y", "%d %B %Y", "%d %b %Y", "%d-%m-%y"):
         try:
-            return datetime.strptime(date_str.strip(), fmt).strftime("%Y%m%d")
+            return datetime.strptime(s, fmt).strftime("%Y%m%d")
         except ValueError:
             continue
-    raise ValueError(f"unparseable date: {date_str!r}")
+    m = re.search(r"\b(\d{1,2})[-/](\d{1,2})[-/](\d{2,4})\b", s)
+    if m:
+        d, mth, y = m.group(1), m.group(2), m.group(3)
+        if len(y) == 2:
+            y = "20" + y
+        return f"{y}{int(mth):02d}{int(d):02d}"
+    return datetime.now().strftime("%Y%m%d")
 
 
 def _v(x) -> str:
