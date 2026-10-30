@@ -120,6 +120,7 @@ def record_to_invoice(record: dict) -> dict:
     inv_no = get("INVOICE_NUMBER")
     dates = get("INVOICE_DATE")
     pos_names = get("PLACE_OF_SUPPLY")
+    buyer_name = get("BUYER_NAME")
 
     # ---- items from rows
     items = []
@@ -249,6 +250,7 @@ def record_to_invoice(record: dict) -> dict:
         "date": date_out,
         "place_of_supply": pos_code,
         "party_name": seller_name[0] if seller_name else "",
+        "buyer_name": buyer_name[0] if buyer_name else "",
         "items": items,
         "total": total,
     }

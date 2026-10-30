@@ -3,6 +3,7 @@ __pycache__/
 venv/
 *.log
 .DS_Store
+.gradle/
 invoices/ocr_out/
 .venv/
 *.db

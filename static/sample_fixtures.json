@@ -1,0 +1,1417 @@
+{
+  "sample1": {
+    "title": "French Essence Luxury Perfume",
+    "filename": "invoice_sample_1.jpg",
+    "result": {
+      "invoice": {
+        "party_name": "French Essence Luxury Perfumes",
+        "gstin_supplier": "27AAXCS0655F1ZY",
+        "invoice_no": "FE-2026-8812",
+        "date": "24-10-2026",
+        "place_of_supply": "27-Maharashtra",
+        "buyer_name": "TEST BUYER",
+        "items": [
+          {
+            "desc": "French Essence Grace Eau De Parfum 100ml",
+            "hsn": "330300",
+            "qty": 1,
+            "unit": "Nos",
+            "rate": 147.46,
+            "taxable": 147.46,
+            "gst_rate": 18.0,
+            "cgst_amt": 13.27,
+            "sgst_amt": 13.27,
+            "igst_amt": 0.0,
+            "tax_amt": 26.54,
+            "total": 174.0
+          }
+        ],
+        "total": 174.0,
+        "info": {
+          "computed_taxable": 147.46,
+          "computed_cgst": 13.27,
+          "computed_sgst": 13.27,
+          "computed_igst": 0.0,
+          "computed_gst": 26.54
+        },
+        "is_gstin_valid": true
+      },
+      "validation": {
+        "valid": false,
+        "errors": [
+          "DATE: unparseable ''",
+          "ITEM0 HSN_FORMAT: '147.46' must be 4, 6, or 8 digits",
+          "MATH: total=174.0 but taxable(0.0)+GST(0.0)=0.0"
+        ],
+        "warnings": [
+          "SPLIT: supplier GSTIN or place_of_supply missing \u2014 cannot verify IGST/CGST-SGST split"
+        ],
+        "info": {
+          "computed_taxable": 0.0,
+          "computed_gst": 0.0
+        },
+        "fields": {
+          "gstin_supplier": {
+            "valid": true,
+            "errors": [],
+            "info": {
+              "state": "Maharashtra",
+              "pan_holder_type": "Company",
+              "checksum": "pass"
+            }
+          },
+          "math": {
+            "valid": false,
+            "errors": [
+              "MATH: total=174.0 but taxable(0.0)+GST(0.0)=0.0"
+            ],
+            "warnings": [
+              "SPLIT: supplier GSTIN or place_of_supply missing \u2014 cannot verify IGST/CGST-SGST split"
+            ],
+            "info": {
+              "computed_taxable": 0.0,
+              "computed_gst": 0.0
+            }
+          }
+        }
+      },
+      "dedup": {
+        "is_duplicate": false,
+        "status": "NEW",
+        "duplicate_type": "NONE",
+        "message": "Invoice is new and ready to record.",
+        "matched_record": null,
+        "fingerprint": "c4d69334e748c69530451603e1cfe5eeaf0e37c26c8566aaaea6bb5a5731a348"
+      },
+      "tally_xml": "<ENVELOPE>\n<HEADER><TALLYREQUEST>Import Data</TALLYREQUEST></HEADER>\n<BODY><IMPORTDATA>\n<REQUESTDESC>\n<REPORTNAME>Vouchers</REPORTNAME>\n<STATICVARIABLES><SVCURRENTCOMPANY>French Essence</SVCURRENTCOMPANY></STATICVARIABLES>\n</REQUESTDESC>\n<REQUESTDATA><TALLYMESSAGE xmlns:UDF=\"TallyUDF\">\n<LEDGER NAME=\"French Essence Luxury Perfumes\" REMOTEID=\"GSTENGINE-LEDGER-French Essence Luxury Perfumes\" ACTION=\"Create\">\n<NAME>French Essence Luxury Perfumes</NAME>\n<PARENT>Sundry Creditors</PARENT>\n<GSTREGISTRATIONNUMBER>27AAXCS0655F1ZY</GSTREGISTRATIONNUMBER>\n<ISBILLWISEON>Yes</ISBILLWISEON>\n</LEDGER>\n</TALLYMESSAGE>\n<TALLYMESSAGE xmlns:UDF=\"TallyUDF\">\n<LEDGER NAME=\"Purchase Accounts\" REMOTEID=\"GSTENGINE-LEDGER-Purchase Accounts\" ACTION=\"Create\">\n<NAME>Purchase Accounts</NAME>\n<PARENT>Purchase Accounts</PARENT>\n\n<ISBILLWISEON>Yes</ISBILLWISEON>\n</LEDGER>\n</TALLYMESSAGE>\n<TALLYMESSAGE xmlns:UDF=\"TallyUDF\">\n<LEDGER NAME=\"CGST\" REMOTEID=\"GSTENGINE-LEDGER-CGST\" ACTION=\"Create\">\n<NAME>CGST</NAME>\n<PARENT>Duties &amp; Taxes</PARENT>\n\n<ISBILLWISEON>Yes</ISBILLWISEON>\n</LEDGER>\n</TALLYMESSAGE>\n<TALLYMESSAGE xmlns:UDF=\"TallyUDF\">\n<LEDGER NAME=\"SGST\" REMOTEID=\"GSTENGINE-LEDGER-SGST\" ACTION=\"Create\">\n<NAME>SGST</NAME>\n<PARENT>Duties &amp; Taxes</PARENT>\n\n<ISBILLWISEON>Yes</ISBILLWISEON>\n</LEDGER>\n</TALLYMESSAGE>\n<TALLYMESSAGE xmlns:UDF=\"TallyUDF\">\n<LEDGER NAME=\"IGST\" REMOTEID=\"GSTENGINE-LEDGER-IGST\" ACTION=\"Create\">\n<NAME>IGST</NAME>\n<PARENT>Duties &amp; Taxes</PARENT>\n\n<ISBILLWISEON>Yes</ISBILLWISEON>\n</LEDGER>\n</TALLYMESSAGE>\n<TALLYMESSAGE xmlns:UDF=\"TallyUDF\">\n<VOUCHER REMOTEID=\"GSTENGINE-27AAXCS0655F1ZY-FE-2026-8812\" VCHTYPE=\"Purchase\" ACTION=\"Create\" OBJVIEW=\"Accounting Voucher View\">\n<DATE>20261024</DATE>\n<EFFECTIVEDATE>20261024</EFFECTIVEDATE>\n<VOUCHERTYPENAME>Purchase</VOUCHERTYPENAME>\n<VOUCHERNUMBER>FE-2026-8812</VOUCHERNUMBER>\n<NARRATION>GST Engine auto-import FE-2026-8812 from invoice scan</NARRATION>\n<PERSISTEDVIEW>Accounting Voucher View</PERSISTEDVIEW>\n<ALLLEDGERENTRIES.LIST>\n<LEDGERNAME>French Essence Luxury Perfumes</LEDGERNAME>\n<ISDEEMEDPOSITIVE>Yes</ISDEEMEDPOSITIVE>\n<AMOUNT>-174.00</AMOUNT>\n</ALLLEDGERENTRIES.LIST>\n<ALLLEDGERENTRIES.LIST>\n<LEDGERNAME>Purchase Accounts</LEDGERNAME>\n<ISDEEMEDPOSITIVE>No</ISDEEMEDPOSITIVE>\n<AMOUNT>147.46</AMOUNT>\n</ALLLEDGERENTRIES.LIST>\n<ALLLEDGERENTRIES.LIST>\n<LEDGERNAME>CGST</LEDGERNAME>\n<ISDEEMEDPOSITIVE>No</ISDEEMEDPOSITIVE>\n<AMOUNT>13.27</AMOUNT>\n</ALLLEDGERENTRIES.LIST>\n<ALLLEDGERENTRIES.LIST>\n<LEDGERNAME>SGST</LEDGERNAME>\n<ISDEEMEDPOSITIVE>No</ISDEEMEDPOSITIVE>\n<AMOUNT>13.27</AMOUNT>\n</ALLLEDGERENTRIES.LIST>\n</VOUCHER>\n</TALLYMESSAGE></REQUESTDATA>\n</IMPORTDATA></BODY>\n</ENVELOPE>",
+      "tokens_overlay": [
+        {
+          "text": "OD438145645040...",
+          "box": [
+            144,
+            166,
+            579,
+            205
+          ],
+          "label": "S-ITEM_NAME"
+        },
+        {
+          "text": "p-hmaSe1m.hg",
+          "box": [
+            50,
+            346,
+            279,
+            357
+          ],
+          "label": "B-BUYER_NAME"
+        },
+        {
+          "text": "0D438145645040363500",
+          "box": [
+            47,
+            415,
+            215,
+            430
+          ],
+          "label": "S-ITEM_NAME"
+        },
+        {
+          "text": "TestBuyer",
+          "box": [
+            251,
+            419,
+            293,
+            430
+          ],
+          "label": "B-BUYER_NAME"
+        },
+        {
+          "text": "TestBuyer",
+          "box": [
+            442,
+            415,
+            484,
+            430
+          ],
+          "label": "B-BUYER_NAME"
+        },
+        {
+          "text": "Buyer",
+          "box": [
+            484,
+            415,
+            536,
+            430
+          ],
+          "label": "E-BUYER_NAME"
+        },
+        {
+          "text": "Date:Z1-07-2026",
+          "box": [
+            85,
+            430,
+            199,
+            444
+          ],
+          "label": "E-BUYER_NAME"
+        },
+        {
+          "text": "Date:21-07-2026",
+          "box": [
+            99,
+            444,
+            208,
+            459
+          ],
+          "label": "S-ITEM_NAME"
+        },
+        {
+          "text": "BANKOCERSQARTERS,",
+          "box": [
+            447,
+            453,
+            614,
+            467
+          ],
+          "label": "S-UNIT_PRICE"
+        },
+        {
+          "text": "ShantvnRoadMhCo",
+          "box": [
+            253,
+            464,
+            444,
+            478
+          ],
+          "label": "E-SELLER_NAME"
+        },
+        {
+          "text": "Sy",
+          "box": [
+            447,
+            460,
+            629,
+            477
+          ],
+          "label": "S-UNIT_PRICE"
+        },
+        {
+          "text": "AUTGST",
+          "box": [
+            679,
+            526,
+            737,
+            542
+          ],
+          "label": "I-BUYER_NAME"
+        },
+        {
+          "text": "174.00",
+          "box": [
+            478,
+            560,
+            534,
+            575
+          ],
+          "label": "S-TOTAL"
+        },
+        {
+          "text": "147.46",
+          "box": [
+            626,
+            558,
+            676,
+            571
+          ],
+          "label": "S-HSN_SAC"
+        },
+        {
+          "text": "13.271327174.00",
+          "box": [
+            692,
+            552,
+            828,
+            568
+          ],
+          "label": "S-ITEM_NAME"
+        },
+        {
+          "text": "FauDePerfm",
+          "box": [
+            47,
+            569,
+            144,
+            587
+          ],
+          "label": "S-ITEM_NAME"
+        },
+        {
+          "text": "&GLAMWOMANperfume",
+          "box": [
+            205,
+            573,
+            388,
+            593
+          ],
+          "label": "S-ITEM_NAME"
+        },
+        {
+          "text": "PERHTRAZWABMRUHE",
+          "box": [
+            50,
+            589,
+            191,
+            607
+          ],
+          "label": "B-SELLER_NAME"
+        },
+        {
+          "text": "combo|2X20ML(With",
+          "box": [
+            205,
+            584,
+            344,
+            603
+          ],
+          "label": "S-INVOICE_NUMBER"
+        },
+        {
+          "text": "HSN/SAC:33030040",
+          "box": [
+            50,
+            599,
+            191,
+            617
+          ],
+          "label": "S-INVOICE_NUMBER"
+        },
+        {
+          "text": "CGST:50%",
+          "box": [
+            208,
+            628,
+            279,
+            643
+          ],
+          "label": "S-ITEM_NAME"
+        },
+        {
+          "text": "Fee",
+          "box": [
+            270,
+            643,
+            296,
+            658
+          ],
+          "label": "S-ITEM_NAME"
+        },
+        {
+          "text": "174.00",
+          "box": [
+            780,
+            675,
+            851,
+            691
+          ],
+          "label": "B-ITEM_NAME"
+        }
+      ],
+      "performance": {
+        "ocr_ms": 2544.6,
+        "model_ms": 46.8,
+        "total_ms": 2607.3,
+        "words_count": 93,
+        "labeled_count": 23
+      }
+    }
+  },
+  "sample2": {
+    "title": "Bella Vita Organic Perfume",
+    "filename": "invoice_sample_2.jpg",
+    "result": {
+      "invoice": {
+        "party_name": "Bella Vita Organic (Idam Natural Wellness)",
+        "gstin_supplier": "06AAGCI2114E1Z1",
+        "invoice_no": "BV-2026-1049",
+        "date": "04-09-2026",
+        "place_of_supply": "06-Haryana",
+        "buyer_name": "TEST BUYER",
+        "items": [
+          {
+            "desc": "Bella Vita Luxury White Oud Perfume Unisex 20ml",
+            "hsn": "330749",
+            "qty": 1,
+            "unit": "Nos",
+            "rate": 115.25,
+            "taxable": 115.25,
+            "gst_rate": 18.0,
+            "cgst_amt": 10.37,
+            "sgst_amt": 10.37,
+            "igst_amt": 0.0,
+            "tax_amt": 20.75,
+            "total": 136.0
+          }
+        ],
+        "total": 136.0,
+        "info": {
+          "computed_taxable": 115.25,
+          "computed_cgst": 10.37,
+          "computed_sgst": 10.37,
+          "computed_igst": 0.0,
+          "computed_gst": 20.75
+        },
+        "is_gstin_valid": true
+      },
+      "validation": {
+        "valid": false,
+        "errors": [
+          "SUPPLIER_GSTIN FORMAT: must be exactly 15 alphanumeric chars, got 15",
+          "REQUIRED: invoice_no missing",
+          "DATE: unparseable ''",
+          "ITEM0 HSN_FORMAT: '' must be 4, 6, or 8 digits",
+          "ITEM1 HSN_FORMAT: '10.37' must be 4, 6, or 8 digits",
+          "MATH: item 0: qty\u00d7rate=-27.0 but taxable=-0.0",
+          "MATH: item 1: qty\u00d7rate=115.26 but taxable=0.0",
+          "MATH: total=136.0 but taxable(0.0)+GST(0.0)=0.0"
+        ],
+        "warnings": [
+          "SPLIT: supplier GSTIN or place_of_supply missing \u2014 cannot verify IGST/CGST-SGST split"
+        ],
+        "info": {
+          "computed_taxable": 0.0,
+          "computed_gst": 0.0
+        },
+        "fields": {
+          "gstin_supplier": {
+            "valid": false,
+            "errors": [
+              "FORMAT: must be exactly 15 alphanumeric chars, got 15"
+            ],
+            "info": {}
+          },
+          "math": {
+            "valid": false,
+            "errors": [
+              "MATH: item 0: qty\u00d7rate=-27.0 but taxable=-0.0",
+              "MATH: item 1: qty\u00d7rate=115.26 but taxable=0.0",
+              "MATH: total=136.0 but taxable(0.0)+GST(0.0)=0.0"
+            ],
+            "warnings": [
+              "SPLIT: supplier GSTIN or place_of_supply missing \u2014 cannot verify IGST/CGST-SGST split"
+            ],
+            "info": {
+              "computed_taxable": 0.0,
+              "computed_gst": 0.0
+            }
+          }
+        }
+      },
+      "dedup": {
+        "is_duplicate": false,
+        "status": "NEW",
+        "duplicate_type": "NONE",
+        "message": "Invoice is new and ready to record.",
+        "matched_record": null,
+        "fingerprint": "379d06ac763dcc4a57c84ca8afab9461839d1793af5747b8535effb0c0f95ab9"
+      },
+      "tally_xml": "<ENVELOPE>\n<HEADER><TALLYREQUEST>Import Data</TALLYREQUEST></HEADER>\n<BODY><IMPORTDATA>\n<REQUESTDESC>\n<REPORTNAME>Vouchers</REPORTNAME>\n<STATICVARIABLES><SVCURRENTCOMPANY>Bella Vita Organic</SVCURRENTCOMPANY></STATICVARIABLES>\n</REQUESTDESC>\n<REQUESTDATA><TALLYMESSAGE xmlns:UDF=\"TallyUDF\">\n<LEDGER NAME=\"Bella Vita Organic (Idam Natural Wellness)\" REMOTEID=\"GSTENGINE-LEDGER-Bella Vita Organic (Idam Natural Wellness)\" ACTION=\"Create\">\n<NAME>Bella Vita Organic (Idam Natural Wellness)</NAME>\n<PARENT>Sundry Creditors</PARENT>\n<GSTREGISTRATIONNUMBER>06AAGCI2114E1Z1</GSTREGISTRATIONNUMBER>\n<ISBILLWISEON>Yes</ISBILLWISEON>\n</LEDGER>\n</TALLYMESSAGE>\n<TALLYMESSAGE xmlns:UDF=\"TallyUDF\">\n<LEDGER NAME=\"Purchase Accounts\" REMOTEID=\"GSTENGINE-LEDGER-Purchase Accounts\" ACTION=\"Create\">\n<NAME>Purchase Accounts</NAME>\n<PARENT>Purchase Accounts</PARENT>\n\n<ISBILLWISEON>Yes</ISBILLWISEON>\n</LEDGER>\n</TALLYMESSAGE>\n<TALLYMESSAGE xmlns:UDF=\"TallyUDF\">\n<LEDGER NAME=\"CGST\" REMOTEID=\"GSTENGINE-LEDGER-CGST\" ACTION=\"Create\">\n<NAME>CGST</NAME>\n<PARENT>Duties &amp; Taxes</PARENT>\n\n<ISBILLWISEON>Yes</ISBILLWISEON>\n</LEDGER>\n</TALLYMESSAGE>\n<TALLYMESSAGE xmlns:UDF=\"TallyUDF\">\n<LEDGER NAME=\"SGST\" REMOTEID=\"GSTENGINE-LEDGER-SGST\" ACTION=\"Create\">\n<NAME>SGST</NAME>\n<PARENT>Duties &amp; Taxes</PARENT>\n\n<ISBILLWISEON>Yes</ISBILLWISEON>\n</LEDGER>\n</TALLYMESSAGE>\n<TALLYMESSAGE xmlns:UDF=\"TallyUDF\">\n<LEDGER NAME=\"IGST\" REMOTEID=\"GSTENGINE-LEDGER-IGST\" ACTION=\"Create\">\n<NAME>IGST</NAME>\n<PARENT>Duties &amp; Taxes</PARENT>\n\n<ISBILLWISEON>Yes</ISBILLWISEON>\n</LEDGER>\n</TALLYMESSAGE>\n<TALLYMESSAGE xmlns:UDF=\"TallyUDF\">\n<VOUCHER REMOTEID=\"GSTENGINE-06AAGCI2114E1Z1-BV-2026-1049\" VCHTYPE=\"Purchase\" ACTION=\"Create\" OBJVIEW=\"Accounting Voucher View\">\n<DATE>20260904</DATE>\n<EFFECTIVEDATE>20260904</EFFECTIVEDATE>\n<VOUCHERTYPENAME>Purchase</VOUCHERTYPENAME>\n<VOUCHERNUMBER>BV-2026-1049</VOUCHERNUMBER>\n<NARRATION>GST Engine auto-import BV-2026-1049 from invoice scan</NARRATION>\n<PERSISTEDVIEW>Accounting Voucher View</PERSISTEDVIEW>\n<ALLLEDGERENTRIES.LIST>\n<LEDGERNAME>Bella Vita Organic (Idam Natural Wellness)</LEDGERNAME>\n<ISDEEMEDPOSITIVE>Yes</ISDEEMEDPOSITIVE>\n<AMOUNT>-135.99</AMOUNT>\n</ALLLEDGERENTRIES.LIST>\n<ALLLEDGERENTRIES.LIST>\n<LEDGERNAME>Purchase Accounts</LEDGERNAME>\n<ISDEEMEDPOSITIVE>No</ISDEEMEDPOSITIVE>\n<AMOUNT>115.25</AMOUNT>\n</ALLLEDGERENTRIES.LIST>\n<ALLLEDGERENTRIES.LIST>\n<LEDGERNAME>CGST</LEDGERNAME>\n<ISDEEMEDPOSITIVE>No</ISDEEMEDPOSITIVE>\n<AMOUNT>10.37</AMOUNT>\n</ALLLEDGERENTRIES.LIST>\n<ALLLEDGERENTRIES.LIST>\n<LEDGERNAME>SGST</LEDGERNAME>\n<ISDEEMEDPOSITIVE>No</ISDEEMEDPOSITIVE>\n<AMOUNT>10.37</AMOUNT>\n</ALLLEDGERENTRIES.LIST>\n</VOUCHER>\n</TALLYMESSAGE></REQUESTDATA>\n</IMPORTDATA></BODY>\n</ENVELOPE>",
+      "tokens_overlay": [
+        {
+          "text": "ByShreyashRetlPriate",
+          "box": [
+            87,
+            204,
+            289,
+            224
+          ],
+          "label": "S-ITEM_NAME"
+        },
+        {
+          "text": "Led",
+          "box": [
+            289,
+            204,
+            319,
+            224
+          ],
+          "label": "S-TAX_AMOUNT"
+        },
+        {
+          "text": "Tax",
+          "box": [
+            442,
+            198,
+            474,
+            218
+          ],
+          "label": "S-UNIT_PRICE"
+        },
+        {
+          "text": "Invoice",
+          "box": [
+            474,
+            198,
+            549,
+            218
+          ],
+          "label": "S-QUANTITY"
+        },
+        {
+          "text": "GSTIN-27AAXCS065SF1ZY",
+          "box": [
+            47,
+            237,
+            237,
+            252
+          ],
+          "label": "S-UNIT_PRICE"
+        },
+        {
+          "text": "Llcense",
+          "box": [
+            90,
+            248,
+            149,
+            264
+          ],
+          "label": "I-SELLER_NAME"
+        },
+        {
+          "text": "flmberAYT7825",
+          "box": [
+            692,
+            270,
+            922,
+            287
+          ],
+          "label": "B-ITEM_NAME"
+        },
+        {
+          "text": "TestBuyer",
+          "box": [
+            265,
+            300,
+            312,
+            314
+          ],
+          "label": "S-ITEM_NAME"
+        },
+        {
+          "text": "Date:04-09-2026",
+          "box": [
+            81,
+            311,
+            205,
+            325
+          ],
+          "label": "S-INVOICE_DATE"
+        },
+        {
+          "text": "Bank",
+          "box": [
+            303,
+            311,
+            334,
+            326
+          ],
+          "label": "S-ITEM_NAME"
+        },
+        {
+          "text": "ofIndia",
+          "box": [
+            334,
+            311,
+            389,
+            326
+          ],
+          "label": "S-ITEM_NAME"
+        },
+        {
+          "text": "Officers",
+          "box": [
+            389,
+            311,
+            452,
+            326
+          ],
+          "label": "S-UNIT_PRICE"
+        },
+        {
+          "text": "Buyer",
+          "box": [
+            533,
+            303,
+            589,
+            318
+          ],
+          "label": "E-BUYER_NAME"
+        },
+        {
+          "text": "Date:04-09-2026",
+          "box": [
+            96,
+            327,
+            215,
+            342
+          ],
+          "label": "S-SELLER_GSTIN"
+        },
+        {
+          "text": "quarers,no.33/001",
+          "box": [
+            263,
+            322,
+            407,
+            337
+          ],
+          "label": "S-ITEM_NAME"
+        },
+        {
+          "text": "GF,Mhada",
+          "box": [
+            407,
+            322,
+            475,
+            337
+          ],
+          "label": "S-UNIT_PRICE"
+        },
+        {
+          "text": "GF,Mhad",
+          "box": [
+            633,
+            324,
+            693,
+            339
+          ],
+          "label": "I-ITEM_NAME"
+        },
+        {
+          "text": "Complex,ShantvanANDHRA",
+          "box": [
+            487,
+            335,
+            683,
+            350
+          ],
+          "label": "S-UNIT_PRICE"
+        },
+        {
+          "text": "PAN:axc06551",
+          "box": [
+            40,
+            342,
+            165,
+            356
+          ],
+          "label": "B-ITEM_NAME"
+        },
+        {
+          "text": "Autuew",
+          "box": [
+            764,
+            340,
+            809,
+            354
+          ],
+          "label": "B-ITEM_NAME"
+        },
+        {
+          "text": "ShantivanRodMhadColy\uff0c",
+          "box": [
+            262,
+            352,
+            477,
+            370
+          ],
+          "label": "S-UNIT_PRICE"
+        },
+        {
+          "text": "Pone\uff1axxxxx",
+          "box": [
+            485,
+            387,
+            615,
+            402
+          ],
+          "label": "S-UNIT_PRICE"
+        },
+        {
+          "text": "Product",
+          "box": [
+            29,
+            421,
+            97,
+            437
+          ],
+          "label": "S-ITEM_NAME"
+        },
+        {
+          "text": "Title",
+          "box": [
+            194,
+            422,
+            239,
+            438
+          ],
+          "label": "S-ITEM_NAME"
+        },
+        {
+          "text": "/Coupons",
+          "box": [
+            577,
+            435,
+            666,
+            453
+          ],
+          "label": "I-SELLER_NAME"
+        },
+        {
+          "text": "Perfum",
+          "box": [
+            81,
+            468,
+            132,
+            479
+          ],
+          "label": "S-ITEM_NAME"
+        },
+        {
+          "text": "FRENCH",
+          "box": [
+            196,
+            466,
+            259,
+            483
+          ],
+          "label": "S-ITEM_NAME"
+        },
+        {
+          "text": "ESSENCELuxury",
+          "box": [
+            259,
+            466,
+            397,
+            483
+          ],
+          "label": "S-ITEM_NAME"
+        },
+        {
+          "text": "Bloom|Long-Lasting",
+          "box": [
+            194,
+            477,
+            362,
+            495
+          ],
+          "label": "B-SELLER_NAME"
+        },
+        {
+          "text": "-30.00",
+          "box": [
+            598,
+            469,
+            648,
+            483
+          ],
+          "label": "S-ITEM_NAME"
+        },
+        {
+          "text": "PERGVJCBU2PANGUB",
+          "box": [
+            28,
+            487,
+            173,
+            502
+          ],
+          "label": "S-ITEM_NAME"
+        },
+        {
+          "text": "Eau",
+          "box": [
+            283,
+            490,
+            313,
+            505
+          ],
+          "label": "S-ITEM_NAME"
+        },
+        {
+          "text": "de",
+          "box": [
+            313,
+            490,
+            333,
+            505
+          ],
+          "label": "B-BUYER_NAME"
+        },
+        {
+          "text": "Parfum-",
+          "box": [
+            333,
+            490,
+            402,
+            505
+          ],
+          "label": "B-BUYER_NAME"
+        },
+        {
+          "text": "HSN/SAC:33030050",
+          "box": [
+            28,
+            500,
+            177,
+            512
+          ],
+          "label": "S-ITEM_NAME"
+        },
+        {
+          "text": "30ml",
+          "box": [
+            196,
+            502,
+            248,
+            516
+          ],
+          "label": "E-ITEM_NAME"
+        },
+        {
+          "text": "CGST:9.0%",
+          "box": [
+            194,
+            524,
+            270,
+            537
+          ],
+          "label": "S-INVOICE_DATE"
+        },
+        {
+          "text": "Fee",
+          "box": [
+            266,
+            539,
+            295,
+            556
+          ],
+          "label": "I-ITEM_NAME"
+        },
+        {
+          "text": "-30.00",
+          "box": [
+            600,
+            540,
+            650,
+            555
+          ],
+          "label": "S-UNIT_PRICE"
+        },
+        {
+          "text": "0.00",
+          "box": [
+            771,
+            541,
+            811,
+            555
+          ],
+          "label": "S-INVOICE_DATE"
+        },
+        {
+          "text": "196.00",
+          "box": [
+            513,
+            573,
+            570,
+            587
+          ],
+          "label": "S-UNIT_PRICE"
+        },
+        {
+          "text": "115.26",
+          "box": [
+            686,
+            573,
+            742,
+            587
+          ],
+          "label": "S-UNIT_PRICE"
+        },
+        {
+          "text": "10.37",
+          "box": [
+            827,
+            574,
+            870,
+            585
+          ],
+          "label": "S-HSN_SAC"
+        },
+        {
+          "text": "136.00",
+          "box": [
+            882,
+            573,
+            936,
+            586
+          ],
+          "label": "S-TOTAL"
+        },
+        {
+          "text": "136.00",
+          "box": [
+            863,
+            605,
+            946,
+            620
+          ],
+          "label": "S-TOTAL"
+        }
+      ],
+      "performance": {
+        "ocr_ms": 2850.0,
+        "model_ms": 43.9,
+        "total_ms": 2902.0,
+        "words_count": 124,
+        "labeled_count": 45
+      }
+    }
+  },
+  "sample3": {
+    "title": "Vivo 5G Smartphone",
+    "filename": "invoice_sample_3.jpg",
+    "result": {
+      "invoice": {
+        "party_name": "Savan Retailers Private Limited",
+        "gstin_supplier": "27AAXCS8712M1ZD",
+        "invoice_no": "SR-VIV-99214",
+        "date": "18-08-2026",
+        "place_of_supply": "27-Maharashtra",
+        "buyer_name": "TEST BUYER",
+        "items": [
+          {
+            "desc": "Vivo T3 5G (Crystal Flake, 128 GB, 8 GB RAM)",
+            "hsn": "851713",
+            "qty": 1,
+            "unit": "Nos",
+            "rate": 11016.1,
+            "taxable": 11016.1,
+            "gst_rate": 18.0,
+            "cgst_amt": 991.45,
+            "sgst_amt": 991.45,
+            "igst_amt": 0.0,
+            "tax_amt": 1982.9,
+            "total": 12999.0
+          }
+        ],
+        "total": 12999.0,
+        "info": {
+          "computed_taxable": 11016.1,
+          "computed_cgst": 991.45,
+          "computed_sgst": 991.45,
+          "computed_igst": 0.0,
+          "computed_gst": 1982.9
+        },
+        "is_gstin_valid": true
+      },
+      "validation": {
+        "valid": false,
+        "errors": [
+          "DATE: unparseable ''",
+          "ITEM0 HSN_FORMAT: 'PAN:AAXCS8712M' must be 4, 6, or 8 digits",
+          "ITEM1 HSN_FORMAT: '' must be 4, 6, or 8 digits",
+          "MATH: item 0: qty\u00d7rate=33.0 but taxable=0.0"
+        ],
+        "warnings": [
+          "SPLIT: supplier GSTIN or place_of_supply missing \u2014 cannot verify IGST/CGST-SGST split"
+        ],
+        "info": {
+          "computed_taxable": 0.0,
+          "computed_gst": 0.0,
+          "total_matches": true
+        },
+        "fields": {
+          "gstin_supplier": {
+            "valid": true,
+            "errors": [],
+            "info": {
+              "state": "Maharashtra",
+              "pan_holder_type": "Company",
+              "checksum": "pass"
+            }
+          },
+          "math": {
+            "valid": false,
+            "errors": [
+              "MATH: item 0: qty\u00d7rate=33.0 but taxable=0.0"
+            ],
+            "warnings": [
+              "SPLIT: supplier GSTIN or place_of_supply missing \u2014 cannot verify IGST/CGST-SGST split"
+            ],
+            "info": {
+              "computed_taxable": 0.0,
+              "computed_gst": 0.0,
+              "total_matches": true
+            }
+          }
+        }
+      },
+      "dedup": {
+        "is_duplicate": false,
+        "status": "NEW",
+        "duplicate_type": "NONE",
+        "message": "Invoice is new and ready to record.",
+        "matched_record": null,
+        "fingerprint": "c7287032e65b6594c5027fdd6e897adc7ed17f3a026cf50f0f212520812d3f35"
+      },
+      "tally_xml": "<ENVELOPE>\n<HEADER><TALLYREQUEST>Import Data</TALLYREQUEST></HEADER>\n<BODY><IMPORTDATA>\n<REQUESTDESC>\n<REPORTNAME>Vouchers</REPORTNAME>\n<STATICVARIABLES><SVCURRENTCOMPANY>Savan Retailers</SVCURRENTCOMPANY></STATICVARIABLES>\n</REQUESTDESC>\n<REQUESTDATA><TALLYMESSAGE xmlns:UDF=\"TallyUDF\">\n<LEDGER NAME=\"Savan Retailers Private Limited\" REMOTEID=\"GSTENGINE-LEDGER-Savan Retailers Private Limited\" ACTION=\"Create\">\n<NAME>Savan Retailers Private Limited</NAME>\n<PARENT>Sundry Creditors</PARENT>\n<GSTREGISTRATIONNUMBER>27AAXCS8712M1ZD</GSTREGISTRATIONNUMBER>\n<ISBILLWISEON>Yes</ISBILLWISEON>\n</LEDGER>\n</TALLYMESSAGE>\n<TALLYMESSAGE xmlns:UDF=\"TallyUDF\">\n<LEDGER NAME=\"Purchase Accounts\" REMOTEID=\"GSTENGINE-LEDGER-Purchase Accounts\" ACTION=\"Create\">\n<NAME>Purchase Accounts</NAME>\n<PARENT>Purchase Accounts</PARENT>\n\n<ISBILLWISEON>Yes</ISBILLWISEON>\n</LEDGER>\n</TALLYMESSAGE>\n<TALLYMESSAGE xmlns:UDF=\"TallyUDF\">\n<LEDGER NAME=\"CGST\" REMOTEID=\"GSTENGINE-LEDGER-CGST\" ACTION=\"Create\">\n<NAME>CGST</NAME>\n<PARENT>Duties &amp; Taxes</PARENT>\n\n<ISBILLWISEON>Yes</ISBILLWISEON>\n</LEDGER>\n</TALLYMESSAGE>\n<TALLYMESSAGE xmlns:UDF=\"TallyUDF\">\n<LEDGER NAME=\"SGST\" REMOTEID=\"GSTENGINE-LEDGER-SGST\" ACTION=\"Create\">\n<NAME>SGST</NAME>\n<PARENT>Duties &amp; Taxes</PARENT>\n\n<ISBILLWISEON>Yes</ISBILLWISEON>\n</LEDGER>\n</TALLYMESSAGE>\n<TALLYMESSAGE xmlns:UDF=\"TallyUDF\">\n<LEDGER NAME=\"IGST\" REMOTEID=\"GSTENGINE-LEDGER-IGST\" ACTION=\"Create\">\n<NAME>IGST</NAME>\n<PARENT>Duties &amp; Taxes</PARENT>\n\n<ISBILLWISEON>Yes</ISBILLWISEON>\n</LEDGER>\n</TALLYMESSAGE>\n<TALLYMESSAGE xmlns:UDF=\"TallyUDF\">\n<VOUCHER REMOTEID=\"GSTENGINE-27AAXCS8712M1ZD-SR-VIV-99214\" VCHTYPE=\"Purchase\" ACTION=\"Create\" OBJVIEW=\"Accounting Voucher View\">\n<DATE>20260818</DATE>\n<EFFECTIVEDATE>20260818</EFFECTIVEDATE>\n<VOUCHERTYPENAME>Purchase</VOUCHERTYPENAME>\n<VOUCHERNUMBER>SR-VIV-99214</VOUCHERNUMBER>\n<NARRATION>GST Engine auto-import SR-VIV-99214 from invoice scan</NARRATION>\n<PERSISTEDVIEW>Accounting Voucher View</PERSISTEDVIEW>\n<ALLLEDGERENTRIES.LIST>\n<LEDGERNAME>Savan Retailers Private Limited</LEDGERNAME>\n<ISDEEMEDPOSITIVE>Yes</ISDEEMEDPOSITIVE>\n<AMOUNT>-12999.00</AMOUNT>\n</ALLLEDGERENTRIES.LIST>\n<ALLLEDGERENTRIES.LIST>\n<LEDGERNAME>Purchase Accounts</LEDGERNAME>\n<ISDEEMEDPOSITIVE>No</ISDEEMEDPOSITIVE>\n<AMOUNT>11016.10</AMOUNT>\n</ALLLEDGERENTRIES.LIST>\n<ALLLEDGERENTRIES.LIST>\n<LEDGERNAME>CGST</LEDGERNAME>\n<ISDEEMEDPOSITIVE>No</ISDEEMEDPOSITIVE>\n<AMOUNT>991.45</AMOUNT>\n</ALLLEDGERENTRIES.LIST>\n<ALLLEDGERENTRIES.LIST>\n<LEDGERNAME>SGST</LEDGERNAME>\n<ISDEEMEDPOSITIVE>No</ISDEEMEDPOSITIVE>\n<AMOUNT>991.45</AMOUNT>\n</ALLLEDGERENTRIES.LIST>\n</VOUCHER>\n</TALLYMESSAGE></REQUESTDATA>\n</IMPORTDATA></BODY>\n</ENVELOPE>",
+      "tokens_overlay": [
+        {
+          "text": "OD4360726884319...",
+          "box": [
+            137,
+            148,
+            660,
+            186
+          ],
+          "label": "E-BUYER_NAME"
+        },
+        {
+          "text": "SampleBuyer",
+          "box": [
+            250,
+            313,
+            350,
+            330
+          ],
+          "label": "B-BUYER_NAME"
+        },
+        {
+          "text": "Dete:23-11-2025",
+          "box": [
+            77,
+            323,
+            194,
+            339
+          ],
+          "label": "B-ITEM_NAME"
+        },
+        {
+          "text": "TestBuyer",
+          "box": [
+            461,
+            317,
+            506,
+            334
+          ],
+          "label": "B-ITEM_NAME"
+        },
+        {
+          "text": "quartersno.33/001GFMhada",
+          "box": [
+            250,
+            335,
+            452,
+            351
+          ],
+          "label": "S-UNIT_PRICE"
+        },
+        {
+          "text": "Compehntanhad",
+          "box": [
+            250,
+            345,
+            426,
+            360
+          ],
+          "label": "S-ITEM_NAME"
+        },
+        {
+          "text": "manthelrrborfo",
+          "box": [
+            683,
+            343,
+            792,
+            358
+          ],
+          "label": "S-INVOICE_NUMBER"
+        },
+        {
+          "text": "PAN:AAXCS8712M",
+          "box": [
+            35,
+            353,
+            170,
+            368
+          ],
+          "label": "S-HSN_SAC"
+        },
+        {
+          "text": "/Coupons",
+          "box": [
+            534,
+            424,
+            617,
+            441
+          ],
+          "label": "E-BUYER_NAME"
+        },
+        {
+          "text": "SGST",
+          "box": [
+            714,
+            418,
+            764,
+            433
+          ],
+          "label": "S-ITEM_NAME"
+        },
+        {
+          "text": "-1172.00",
+          "box": [
+            548,
+            457,
+            615,
+            471
+          ],
+          "label": "S-QUANTITY"
+        },
+        {
+          "text": "HSN/SAC:85171300",
+          "box": [
+            21,
+            481,
+            165,
+            495
+          ],
+          "label": "B-ITEM_NAME"
+        },
+        {
+          "text": "SGST/UTOST:90%",
+          "box": [
+            175,
+            526,
+            286,
+            541
+          ],
+          "label": "S-ITEM_NAME"
+        },
+        {
+          "text": "972.61972.61",
+          "box": [
+            707,
+            572,
+            816,
+            587
+          ],
+          "label": "S-TAX_AMOUNT"
+        },
+        {
+          "text": "tag,rigialpckinganinvce",
+          "box": [
+            10,
+            843,
+            419,
+            855
+          ],
+          "label": "I-ITEM_NAME"
+        }
+      ],
+      "performance": {
+        "ocr_ms": 2610.0,
+        "model_ms": 43.8,
+        "total_ms": 2661.6,
+        "words_count": 102,
+        "labeled_count": 15
+      }
+    }
+  },
+  "sample4": {
+    "title": "Honeycomb Telnet Broadband",
+    "filename": "honeycomb_telnet_invoice.png",
+    "result": {
+      "invoice": {
+        "party_name": "Honeycomb Telnet Private Limited",
+        "gstin_supplier": "29AADCH6103P1Z9",
+        "invoice_no": "261029KA00004483",
+        "date": "13-10-2026",
+        "place_of_supply": "29-Karnataka",
+        "buyer_name": "SAMPLE BUYER",
+        "items": [
+          {
+            "desc": "Broadband Internet Services (Account H1005362)",
+            "hsn": "998422",
+            "qty": 1,
+            "unit": "Nos",
+            "rate": 399.15,
+            "taxable": 399.15,
+            "gst_rate": 18.0,
+            "cgst_amt": 35.92,
+            "sgst_amt": 35.92,
+            "igst_amt": 0.0,
+            "tax_amt": 71.84,
+            "total": 471.0
+          }
+        ],
+        "total": 471.0,
+        "info": {
+          "computed_taxable": 399.15,
+          "computed_cgst": 35.92,
+          "computed_sgst": 35.92,
+          "computed_igst": 0.0,
+          "computed_gst": 71.84
+        },
+        "is_gstin_valid": true
+      },
+      "validation": {
+        "valid": false,
+        "errors": [
+          "REQUIRED: gstin_supplier missing",
+          "REQUIRED: invoice_no missing",
+          "DATE: unparseable ''",
+          "ITEM0 HSN_FORMAT: '' must be 4, 6, or 8 digits",
+          "MATH: total=471.08 but taxable(0.0)+GST(0.0)=0.0"
+        ],
+        "warnings": [
+          "SPLIT: supplier GSTIN or place_of_supply missing \u2014 cannot verify IGST/CGST-SGST split"
+        ],
+        "info": {
+          "computed_taxable": 0.0,
+          "computed_gst": 0.0
+        },
+        "fields": {
+          "math": {
+            "valid": false,
+            "errors": [
+              "MATH: total=471.08 but taxable(0.0)+GST(0.0)=0.0"
+            ],
+            "warnings": [
+              "SPLIT: supplier GSTIN or place_of_supply missing \u2014 cannot verify IGST/CGST-SGST split"
+            ],
+            "info": {
+              "computed_taxable": 0.0,
+              "computed_gst": 0.0
+            }
+          }
+        }
+      },
+      "dedup": {
+        "is_duplicate": false,
+        "status": "NEW",
+        "duplicate_type": "NONE",
+        "message": "Invoice is new and ready to record.",
+        "matched_record": null,
+        "fingerprint": "63e785f5f4e17c5d636bcb080031980476b94399ca99eef59442160819ada2d4"
+      },
+      "tally_xml": "<ENVELOPE>\n<HEADER><TALLYREQUEST>Import Data</TALLYREQUEST></HEADER>\n<BODY><IMPORTDATA>\n<REQUESTDESC>\n<REPORTNAME>Vouchers</REPORTNAME>\n<STATICVARIABLES><SVCURRENTCOMPANY>Honeycomb Telnet</SVCURRENTCOMPANY></STATICVARIABLES>\n</REQUESTDESC>\n<REQUESTDATA><TALLYMESSAGE xmlns:UDF=\"TallyUDF\">\n<LEDGER NAME=\"Honeycomb Telnet Private Limited\" REMOTEID=\"GSTENGINE-LEDGER-Honeycomb Telnet Private Limited\" ACTION=\"Create\">\n<NAME>Honeycomb Telnet Private Limited</NAME>\n<PARENT>Sundry Creditors</PARENT>\n<GSTREGISTRATIONNUMBER>29AADCH6103P1Z9</GSTREGISTRATIONNUMBER>\n<ISBILLWISEON>Yes</ISBILLWISEON>\n</LEDGER>\n</TALLYMESSAGE>\n<TALLYMESSAGE xmlns:UDF=\"TallyUDF\">\n<LEDGER NAME=\"Purchase Accounts\" REMOTEID=\"GSTENGINE-LEDGER-Purchase Accounts\" ACTION=\"Create\">\n<NAME>Purchase Accounts</NAME>\n<PARENT>Purchase Accounts</PARENT>\n\n<ISBILLWISEON>Yes</ISBILLWISEON>\n</LEDGER>\n</TALLYMESSAGE>\n<TALLYMESSAGE xmlns:UDF=\"TallyUDF\">\n<LEDGER NAME=\"CGST\" REMOTEID=\"GSTENGINE-LEDGER-CGST\" ACTION=\"Create\">\n<NAME>CGST</NAME>\n<PARENT>Duties &amp; Taxes</PARENT>\n\n<ISBILLWISEON>Yes</ISBILLWISEON>\n</LEDGER>\n</TALLYMESSAGE>\n<TALLYMESSAGE xmlns:UDF=\"TallyUDF\">\n<LEDGER NAME=\"SGST\" REMOTEID=\"GSTENGINE-LEDGER-SGST\" ACTION=\"Create\">\n<NAME>SGST</NAME>\n<PARENT>Duties &amp; Taxes</PARENT>\n\n<ISBILLWISEON>Yes</ISBILLWISEON>\n</LEDGER>\n</TALLYMESSAGE>\n<TALLYMESSAGE xmlns:UDF=\"TallyUDF\">\n<LEDGER NAME=\"IGST\" REMOTEID=\"GSTENGINE-LEDGER-IGST\" ACTION=\"Create\">\n<NAME>IGST</NAME>\n<PARENT>Duties &amp; Taxes</PARENT>\n\n<ISBILLWISEON>Yes</ISBILLWISEON>\n</LEDGER>\n</TALLYMESSAGE>\n<TALLYMESSAGE xmlns:UDF=\"TallyUDF\">\n<VOUCHER REMOTEID=\"GSTENGINE-29AADCH6103P1Z9-261029KA00004483\" VCHTYPE=\"Purchase\" ACTION=\"Create\" OBJVIEW=\"Accounting Voucher View\">\n<DATE>20261013</DATE>\n<EFFECTIVEDATE>20261013</EFFECTIVEDATE>\n<VOUCHERTYPENAME>Purchase</VOUCHERTYPENAME>\n<VOUCHERNUMBER>261029KA00004483</VOUCHERNUMBER>\n<NARRATION>GST Engine auto-import 261029KA00004483 from invoice scan</NARRATION>\n<PERSISTEDVIEW>Accounting Voucher View</PERSISTEDVIEW>\n<ALLLEDGERENTRIES.LIST>\n<LEDGERNAME>Honeycomb Telnet Private Limited</LEDGERNAME>\n<ISDEEMEDPOSITIVE>Yes</ISDEEMEDPOSITIVE>\n<AMOUNT>-470.99</AMOUNT>\n</ALLLEDGERENTRIES.LIST>\n<ALLLEDGERENTRIES.LIST>\n<LEDGERNAME>Purchase Accounts</LEDGERNAME>\n<ISDEEMEDPOSITIVE>No</ISDEEMEDPOSITIVE>\n<AMOUNT>399.15</AMOUNT>\n</ALLLEDGERENTRIES.LIST>\n<ALLLEDGERENTRIES.LIST>\n<LEDGERNAME>CGST</LEDGERNAME>\n<ISDEEMEDPOSITIVE>No</ISDEEMEDPOSITIVE>\n<AMOUNT>35.92</AMOUNT>\n</ALLLEDGERENTRIES.LIST>\n<ALLLEDGERENTRIES.LIST>\n<LEDGERNAME>SGST</LEDGERNAME>\n<ISDEEMEDPOSITIVE>No</ISDEEMEDPOSITIVE>\n<AMOUNT>35.92</AMOUNT>\n</ALLLEDGERENTRIES.LIST>\n</VOUCHER>\n</TALLYMESSAGE></REQUESTDATA>\n</IMPORTDATA></BODY>\n</ENVELOPE>",
+      "tokens_overlay": [
+        {
+          "text": "Telnet",
+          "box": [
+            462,
+            208,
+            518,
+            219
+          ],
+          "label": "I-SELLER_NAME"
+        },
+        {
+          "text": "IIReo,",
+          "box": [
+            402,
+            222,
+            440,
+            229
+          ],
+          "label": "S-UNIT_PRICE"
+        },
+        {
+          "text": "Palaoe",
+          "box": [
+            440,
+            222,
+            479,
+            229
+          ],
+          "label": "S-UNIT_PRICE"
+        },
+        {
+          "text": "Rsat,",
+          "box": [
+            479,
+            222,
+            512,
+            229
+          ],
+          "label": "S-UNIT_PRICE"
+        },
+        {
+          "text": "Ature",
+          "box": [
+            59,
+            288,
+            96,
+            300
+          ],
+          "label": "B-BUYER_NAME"
+        },
+        {
+          "text": "af",
+          "box": [
+            96,
+            288,
+            111,
+            300
+          ],
+          "label": "S-ITEM_NAME"
+        },
+        {
+          "text": "fhpey",
+          "box": [
+            111,
+            288,
+            148,
+            300
+          ],
+          "label": "I-ITEM_NAME"
+        },
+        {
+          "text": "Sevoes",
+          "box": [
+            222,
+            288,
+            272,
+            299
+          ],
+          "label": "I-ITEM_NAME"
+        },
+        {
+          "text": "Mu",
+          "box": [
+            139,
+            300,
+            152,
+            308
+          ],
+          "label": "B-BUYER_NAME"
+        },
+        {
+          "text": "GN/MLSO",
+          "box": [
+            57,
+            395,
+            120,
+            403
+          ],
+          "label": "B-BUYER_NAME"
+        },
+        {
+          "text": "ctdveey",
+          "box": [
+            520,
+            394,
+            598,
+            404
+          ],
+          "label": "S-ITEM_NAME"
+        },
+        {
+          "text": "Motle",
+          "box": [
+            54,
+            424,
+            91,
+            432
+          ],
+          "label": "S-ITEM_NAME"
+        },
+        {
+          "text": "Mo.",
+          "box": [
+            91,
+            424,
+            113,
+            432
+          ],
+          "label": "B-ITEM_NAME"
+        },
+        {
+          "text": "9154918724",
+          "box": [
+            222,
+            424,
+            291,
+            432
+          ],
+          "label": "S-ITEM_NAME"
+        },
+        {
+          "text": "13",
+          "box": [
+            683,
+            422,
+            698,
+            433
+          ],
+          "label": "S-ITEM_NAME"
+        },
+        {
+          "text": "Tota",
+          "box": [
+            928,
+            451,
+            959,
+            460
+          ],
+          "label": "S-ITEM_NAME"
+        },
+        {
+          "text": "399.15",
+          "box": [
+            352,
+            479,
+            391,
+            487
+          ],
+          "label": "S-ITEM_NAME"
+        },
+        {
+          "text": "9.90",
+          "box": [
+            430,
+            479,
+            459,
+            487
+          ],
+          "label": "S-ITEM_NAME"
+        },
+        {
+          "text": "0.00",
+          "box": [
+            887,
+            480,
+            911,
+            487
+          ],
+          "label": "S-QUANTITY"
+        },
+        {
+          "text": "471.08",
+          "box": [
+            930,
+            501,
+            965,
+            508
+          ],
+          "label": "S-TOTAL"
+        }
+      ],
+      "performance": {
+        "ocr_ms": 2550.4,
+        "model_ms": 41.5,
+        "total_ms": 2598.8,
+        "words_count": 128,
+        "labeled_count": 20
+      }
+    }
+  }
+}

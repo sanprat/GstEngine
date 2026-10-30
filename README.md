@@ -5,10 +5,24 @@
 [![Model Size](https://img.shields.io/badge/Model_Size-13.17_MB_(INT8_ONNX)-orange.svg)](smoke_run_v8/model_int8.onnx)
 [![Latency](https://img.shields.io/badge/CPU_Latency-~52_ms_/_page-brightgreen.svg)](BENCHMARK_REPORT.md)
 [![Platform](https://img.shields.io/badge/Platform-Android_%7C_Edge_%7C_Python-purple.svg)](#)
+[![Live PWA](https://img.shields.io/badge/Live_PWA-sanprat.github.io%2FGstEngine-blue.svg?logo=safari)](https://sanprat.github.io/GstEngine/)
 
 > **A 13.17 MB on-device LayoutLM model designed for offline Indian GST invoice extraction directly into TallyPrime import XML.**
 > 
 > *100% offline, zero cloud API fees, privacy-preserving, and free for commercial use.*
+
+---
+
+## 📱 Live Web App & Mobile PWA (iOS & Android)
+
+👉 **Open the live scanner on your phone or desktop**: [**https://sanprat.github.io/GstEngine/**](https://sanprat.github.io/GstEngine/)
+
+* **iPhone (iOS Safari)**: Open link in Safari → Tap **Share** (⎋) → **"Add to Home Screen"** (⊞) for full-screen camera app with custom icon.
+* **Android (Chrome)**: Tap **"Install App"** to add to your app drawer and home screen.
+* **Instant 1-Tap Real Invoices**: Test live extractions for Honeycomb Telnet, French Essence, Bella Vita, and Vivo 5G bills.
+* **Camera & File Uploads**: Real-time WebRTC camera viewfinder, native camera snapshot, and client-side PDF document rendering.
+* **Zero Backend Required**: Runs client-side OCR and Indian GST statutory reconciliation directly in-browser with optional LayoutLM v9 neural edge backend.
+* **Tally XML Direct Export**: Instant one-click download of TallyPrime-compliant purchase vouchers.
 
 ---
 
