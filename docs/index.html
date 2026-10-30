@@ -590,23 +590,23 @@
     <div class="sample-label">Or try bundled sample invoices:</div>
     <div class="sample-scroll">
       <div class="sample-chip" onclick="selectSample('sample1')">
-        1: Perfume (₹174)
+        1: Tech Hardware (₹9,87,985)
       </div>
       <div class="sample-chip" onclick="selectSample('sample2')">
-        2: Perfume (₹136)
+        2: Industrial Parts (₹11,76,640)
       </div>
       <div class="sample-chip" onclick="selectSample('sample3')">
-        3: Vivo 5G (₹12,752)
+        3: Cloud SaaS (₹10,03,000)
       </div>
       <div class="sample-chip active" id="chipSample4" onclick="selectSample('sample4')">
-        4: Honeycomb (₹471)
+        4: Pharma Supply (₹1,47,804)
       </div>
     </div>
 
     <!-- Document Preview Card -->
     <div class="preview-card">
       <div class="preview-viewport">
-        <img id="previewImg" src="samples/honeycomb_telnet_invoice.png" alt="Document Preview">
+        <img id="previewImg" src="samples/GST_Invoice_04_Pharma_MultiRate_Batches.png" alt="Document Preview">
         <div class="zoom-badge" id="zoomBadge">🔍 Document Cropped &amp; Zoomed (2.5x)</div>
       </div>
     </div>
@@ -789,7 +789,7 @@
     }
 
     // State
-    let currentImageSrc = 'samples/honeycomb_telnet_invoice.png';
+    let currentImageSrc = 'samples/GST_Invoice_04_Pharma_MultiRate_Batches.png';
     let currentParsedData = null;
     let sampleFixtures = null;
     let cameraMediaStream = null;
@@ -799,7 +799,7 @@
       .then(r => r.json())
       .then(d => {
         sampleFixtures = d;
-        // Default to sample 4 (Honeycomb Telnet)
+        // Default to sample 4 (Pharma Supply)
         selectSample('sample4', false);
       })
       .catch(e => console.warn('Fixtures load warning:', e));
@@ -827,24 +827,24 @@
     // 1. Bundled Sample Invoices Selection
     const sampleMap = {
       'sample1': {
-        img: 'samples/invoice_sample_1.jpg',
-        title: '1: Perfume (₹174)',
-        zoom: '📄 Raw Photo (Uncropped)'
+        img: 'samples/GST_Invoice_01_TechHardware_B2B_Intrastate.png',
+        title: '1: Tech Hardware (₹9,87,985)',
+        zoom: '📄 Synthetic B2B Intra-State Invoice'
       },
       'sample2': {
-        img: 'samples/invoice_sample_2.jpg',
-        title: '2: Perfume (₹136)',
-        zoom: '📄 Raw Photo (Uncropped)'
+        img: 'samples/GST_Invoice_02_Industrial_Interstate_eInvoice.png',
+        title: '2: Industrial Parts (₹11,76,640)',
+        zoom: '📄 Synthetic B2B Inter-State e-Invoice'
       },
       'sample3': {
-        img: 'samples/invoice_sample_3.jpg',
-        title: '3: Vivo 5G (₹12,752)',
-        zoom: '📄 Raw Photo (Uncropped)'
+        img: 'samples/GST_Invoice_03_Consulting_SaaS_Services.png',
+        title: '3: Cloud SaaS (₹10,03,000)',
+        zoom: '📄 Synthetic Services e-Invoice'
       },
       'sample4': {
-        img: 'samples/honeycomb_telnet_invoice.png',
-        title: '4: Honeycomb Telnet (₹471)',
-        zoom: '🔍 Document Cropped & Zoomed (2.5x)'
+        img: 'samples/GST_Invoice_04_Pharma_MultiRate_Batches.png',
+        title: '4: Pharma Supply (₹1,47,804)',
+        zoom: '📄 Synthetic Multi-Rate Pharma Invoice'
       }
     };
 

@@ -1084,12 +1084,12 @@ class MobilePwaHandler(BaseHTTPRequestHandler):
         elif path.startswith("/sample/"):
             sample_id = path.split("/")[-1]
             sample_map = {
-                "1": "invoice_sample_1.jpg",
-                "2": "invoice_sample_2.jpg",
-                "3": "invoice_sample_3.jpg",
-                "4": "honeycomb_telnet_invoice.png"
+                "1": "GST_Invoice_01_TechHardware_B2B_Intrastate.png",
+                "2": "GST_Invoice_02_Industrial_Interstate_eInvoice.png",
+                "3": "GST_Invoice_03_Consulting_SaaS_Services.png",
+                "4": "GST_Invoice_04_Pharma_MultiRate_Batches.png"
             }
-            sample_file = sample_map.get(sample_id, "invoice_sample_1.jpg")
+            sample_file = sample_map.get(sample_id, "GST_Invoice_01_TechHardware_B2B_Intrastate.png")
             sample_path = os.path.join(SAMPLES_DIR, sample_file)
             if not os.path.exists(sample_path):
                 # Fallback to TechHardware sample
