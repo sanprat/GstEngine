@@ -432,6 +432,25 @@
       gap: 4px;
       width: 100%;
     }
+    .btn-tally-push {
+      background: var(--brand-success);
+      color: #FFFFFF;
+      height: 48px;
+      border-radius: 12px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      width: 100%;
+    }
+    .tally-status {
+      min-height: 18px;
+      color: var(--text-muted);
+      white-space: pre-wrap;
+    }
 
     /* Dialog styling per Modern Web Guidance */
     dialog {
@@ -695,10 +714,10 @@
 
       <!-- Tally Export Actions -->
       <div class="row g-2 mt-3">
-        <div class="col-8">
+        <div class="col-4">
           <button id="btnDownloadXml" class="btn-tally-download">
             <i class="bi bi-download"></i>
-            <span>Download Tally XML</span>
+            <span>Download XML</span>
           </button>
         </div>
         <div class="col-4">
@@ -706,6 +725,38 @@
             <i class="bi bi-code-slash"></i>
             <span>View XML</span>
           </button>
+        </div>
+        <div class="col-4">
+          <button id="btnPushTally" class="btn-tally-push">
+            <i class="bi bi-send"></i>
+            <span>Push to Tally</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Direct Tally Push Row (uses backend /api/tally so the phone never
+           sends GET/OPTIONS to Tally, which Tally rejects as "Unknown Request") -->
+      <div class="row g-2 mt-2 align-items-center tally-push-row" id="tallyPushRow" style="display:none;">
+        <div class="col-5">
+          <input type="text" id="tallyHostInput" class="form-control form-control-sm rounded-3"
+                 placeholder="Tally PC IP e.g. 192.168.1.5">
+        </div>
+        <div class="col-3">
+          <input type="number" id="tallyPortInput" class="form-control form-control-sm rounded-3"
+                 value="9000" min="1" max="65535">
+        </div>
+        <div class="col-4">
+          <button id="btnTestTally" class="btn btn-outline-secondary btn-sm w-100 rounded-3">
+            <i class="bi bi-plug"></i> Test
+          </button>
+        </div>
+        <div class="col-12 mt-1">
+          <button id="btnConfirmPush" class="btn btn-success btn-sm w-100 rounded-3">
+            <i class="bi bi-send"></i> Push Voucher to Tally
+          </button>
+        </div>
+        <div class="col-12 mt-1">
+          <div id="tallyPushStatus" class="small tally-status"></div>
         </div>
       </div>
     </div>
@@ -1272,6 +1323,83 @@
     document.getElementById('btnViewXml').addEventListener('click', () => {
       document.getElementById('xmlDialog').showModal();
     });
+
+    // 6b. Push to Tally (server-side forward — never GET/OPTIONS straight to Tally)
+    const tallyPushRow = document.getElementById('tallyPushRow');
+    const tallyHostInput = document.getElementById('tallyHostInput');
+    const tallyPortInput = document.getElementById('tallyPortInput');
+    const tallyPushStatus = document.getElementById('tallyPushStatus');
+
+    function tallyBackendBase() {
+      const saved = (localStorage.getItem('gst_backend_url') || '').replace(/\/+$/, '');
+      return saved || ''; // same origin when served by the app server
+    }
+
+    function setTallyStatus(text, ok = null) {
+      tallyPushStatus.textContent = text;
+      tallyPushStatus.style.color = ok === true ? '#059669' : (ok === false ? '#DC2626' : 'var(--text-muted)');
+    }
+
+    document.getElementById('btnPushTally').addEventListener('click', () => {
+      const visible = tallyPushRow.style.display !== 'none';
+      tallyPushRow.style.display = visible ? 'none' : 'block';
+      if (!visible) {
+        const lastHost = localStorage.getItem('gst_tally_host');
+        if (lastHost) tallyHostInput.value = lastHost;
+        setTallyStatus('');
+      }
+    });
+
+    document.getElementById('btnTestTally').addEventListener('click', async () => {
+      const host = tallyHostInput.value.trim();
+      const port = tallyPortInput.value.trim() || '9000';
+      if (!host) { setTallyStatus('Enter the Tally PC IP address first.', false); return; }
+      localStorage.setItem('gst_tally_host', host);
+      setTallyStatus('⏳ Testing connection…');
+      try {
+        const resp = await fetch(`${tallyBackendBase()}/api/tally/ping?host=${encodeURIComponent(host)}&port=${encodeURIComponent(port)}`, { cache: 'no-store' });
+        const data = await resp.json();
+        if (resp.ok && data.ok) setTallyStatus(`✅ ${data.message}`, true);
+        else setTallyStatus(`❌ ${data.error || 'Tally unreachable'}`, false);
+      } catch (err) {
+        setTallyStatus(`⚠️ Cannot reach backend API (${err.message}). Open this page from the app server (http://<ip>:8000) or set Backend URL in Settings.`, false);
+      }
+    });
+
+    // The main action: forward the scanned envelope to Tally via the backend.
+    async function pushToTally() {
+      if (!currentParsedData) { setTallyStatus('Scan an invoice first — nothing to push.', false); return; }
+      const host = tallyHostInput.value.trim();
+      const port = tallyPortInput.value.trim() || '9000';
+      if (!host) { setTallyStatus('Enter the Tally PC IP address first.', false); return; }
+      localStorage.setItem('gst_tally_host', host);
+      setTallyStatus(`⏳ Pushing voucher to ${host}:${port}…`);
+      try {
+        const resp = await fetch(`${tallyBackendBase()}/api/tally`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            host, port: parseInt(port, 10),
+            tally_xml: currentParsedData.xml,
+            timeout: 10
+          })
+        });
+        const data = await resp.json();
+        if (resp.ok && data.ok) {
+          const created = (data.created || []).length;
+          const altered = (data.altered || []).length;
+          const ignored = (data.ignored || []).length;
+          setTallyStatus(`✅ Tally accepted. Created: ${created}, Altered: ${altered}, Ignored: ${ignored}.`, true);
+        } else {
+          const detail = data.hint || data.error || JSON.stringify(data);
+          setTallyStatus(`❌ Tally rejected: ${detail}`, false);
+        }
+      } catch (err) {
+        setTallyStatus(`⚠️ Push failed: ${err.message}`, false);
+      }
+    }
+
+    document.getElementById('btnConfirmPush').addEventListener('click', pushToTally);
 
     document.getElementById('btnCopyXml').addEventListener('click', () => {
       const xml = document.getElementById('xmlCode').textContent;

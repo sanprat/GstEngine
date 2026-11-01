@@ -24,7 +24,7 @@ import socket
 import sys
 import time
 from datetime import datetime
-from http.server import HTTPServer, BaseHTTPRequestHandler
+from http.server import ThreadingHTTPServer, BaseHTTPRequestHandler
 from urllib.parse import urlparse
 
 import cv2
@@ -1196,6 +1196,31 @@ class MobilePwaHandler(BaseHTTPRequestHandler):
                 self.end_headers()
                 self.wfile.write(HTML_PAGE.encode("utf-8"))
 
+        elif path == "/api/tally/ping":
+            # Lightweight reachability probe for the PWA's "Test connection" button.
+            # We only attempt a TCP connect — sending a GET to Tally's HTTP port
+            # would itself be answered with "Unknown Request; cannot be processed".
+            from urllib.parse import parse_qs
+            params = parse_qs(parsed.query)
+            host = params.get("host", ["127.0.0.1"])[0]
+            port = 9000
+            try:
+                port = int(params.get("port", [9000])[0])
+                with socket.create_connection((host, port), timeout=2.0):
+                    payload = {"ok": True, "host": host, "port": port,
+                               "message": "Tally HTTP port is reachable"}
+                status = 200
+            except Exception as exc:
+                payload = {"ok": False, "host": host, "port": port,
+                           "error": f"Tally is not reachable: {exc}"}
+                status = 503
+            data = json.dumps(payload).encode("utf-8")
+            self.send_response(status)
+            self.send_header("Content-Type", "application/json")
+            self.send_header("Content-Length", str(len(data)))
+            self.end_headers()
+            self.wfile.write(data)
+
         elif path == "/apple-touch-icon.png":
             icon_path = os.path.join(DOCS_DIR, "icons", "apple-touch-icon.png")
             if not os.path.exists(icon_path):
@@ -1280,13 +1305,33 @@ class MobilePwaHandler(BaseHTTPRequestHandler):
                 if not tally_xml:
                     raise ValueError("missing tally_xml in request body")
                 if "<ENVELOPE>" not in tally_xml:
-                    # Raw voucher/XML without envelope → wrap it correctly
+                    # Raw voucher/XML without envelope → wrap it correctly.
+                    # Only accepts real Tally request fragments — garbage that Tally
+                    # would answer "Unknown Request" to gets rejected here instead.
+                    if not re.search(r"<(?:TALLYMESSAGE|VOUCHER|LEDGER)\b", tally_xml, re.I):
+                        raise ValueError(
+                            "tally_xml is not a Tally <ENVELOPE> import request or a "
+                            "voucher/ledger fragment — got: " + tally_xml[:80])
                     tally_xml = envelope(tally_xml, data.get("company", ""))
+                if not re.match(r"\s*(?:<\?xml[^>]*>\s*)?<ENVELOPE\b", tally_xml, re.I):
+                    raise ValueError("tally_xml must be a Tally <ENVELOPE> import request")
+                # Fail fast on a wrong IP / closed port instead of hanging the UI
+                # for the full 30 s urllib timeout.
+                with socket.create_connection((host, port), timeout=2.0):
+                    pass
                 from tally_client import post_xml, parse_result
-                resp = post_xml(tally_xml, host=host, port=port, timeout=data.get("timeout", 30))
+                timeout = min(max(int(float(data.get("timeout", 8))), 1), 15)
+                resp = post_xml(tally_xml, host=host, port=port, timeout=timeout)
                 result = parse_result(resp)
                 result["raw_response"] = resp
                 result["ok"] = bool(result["created"] or result["altered"]) and not result["errors"]
+                if "Unknown Request" in resp:
+                    result["hint"] = ("Tally received the request but rejected it as 'Unknown "
+                                      "Request'. Send the full <ENVELOPE> import payload via POST "
+                                      "to http://<tally-pc>:9000 (no URL path, no GET/OPTIONS). "
+                                      "In TallyPrime make sure the HTTP Server is enabled (F1 -> "
+                                      "Configure -> Connectivity) and note it only accepts raw "
+                                      "XML bodies, not form-encoded ones.")
                 resp_bytes = json.dumps(result).encode("utf-8")
                 self.send_response(200)
                 self.send_header("Content-Type", "application/json")
@@ -1294,7 +1339,11 @@ class MobilePwaHandler(BaseHTTPRequestHandler):
                 self.end_headers()
                 self.wfile.write(resp_bytes)
             except Exception as e:
-                err_bytes = json.dumps({"error": str(e)}).encode("utf-8")
+                err_bytes = json.dumps({"error": str(e), "hint": (
+                    "Check Tally is running with HTTP Server enabled (F1 -> Configure -> "
+                    "Connectivity, port 9000). If your phone and Tally PC are on the same "
+                    "Wi-Fi, use the PC's LAN IP (e.g. 192.168.x.x) as host, not 127.0.0.1."
+                )}).encode("utf-8")
                 self.send_response(502)
                 self.send_header("Content-Type", "application/json")
                 self.send_header("Content-Length", str(len(err_bytes)))
@@ -1354,7 +1403,9 @@ class MobilePwaHandler(BaseHTTPRequestHandler):
 
 def start_pwa_server(port: int = 8000):
     local_ip = get_local_ip()
-    server = HTTPServer(("0.0.0.0", port), MobilePwaHandler)
+    # OCR and Tally forwarding are blocking operations. A single-threaded server
+    # made the Tally button appear frozen while /api/scan was still running.
+    server = ThreadingHTTPServer(("0.0.0.0", port), MobilePwaHandler)
     print("\n" + "=" * 68)
     print("🚀 Tiny GST Engine — iOS & Android PWA Server is LIVE!")
     print("=" * 68)
