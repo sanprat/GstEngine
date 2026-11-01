@@ -35,7 +35,7 @@ from rapidocr_onnxruntime import RapidOCR
 
 from extract_to_tally import record_to_invoice, clean_amount
 from gst_validator import validate_invoice, validate_gstin
-from tally_xml import build_import
+from tally_xml import build_import, envelope
 from invoice_dedup import InvoiceDeduplicator
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -103,7 +103,12 @@ def extract_buyer_name_rule(raw_text: str, nlp_buyer: str = "") -> str:
         "delhi", "bank", "union", "flat", "road", "street", "floor", "house",
         "hsn", "sac", "taxable", "total", "cgst", "sgst", "igst", "rupees",
         "nature of", "invoice number", "original", "supply", "order",
-        "goods", "services", "private limited", "pvt ltd", "limited", "retail"
+        "goods", "services", "private limited", "pvt ltd", "limited", "retail",
+        "tax invoice", "gst invoice", "tax invoice/", "invoice/", "invoice",
+        "cash memo", "debit note", "credit note", "delivery note",
+        "delivery challan", "bill to", "billed to", "purchase order",
+        "sales invoice", "statement", "receipt", "proforma", "sample",
+        "for recipient", "duplicate for"
     ]
 
     def is_noise(s: str) -> bool:
@@ -129,6 +134,123 @@ def extract_buyer_name_rule(raw_text: str, nlp_buyer: str = "") -> str:
         return re.sub(r'([A-Za-z])\1{2,}', r'\1\1', nlp_buyer.strip())
 
     return ""
+
+
+def rescue_tax_from_raw_text(raw_text: str, invoice: dict) -> list:
+    """Recover CGST/SGST/IGST rates & amounts the model missed (e.g. retail layouts).
+
+    Retail invoices (Retail Store/Retail Brand style) often leave the v9 model with
+    gst_rate=0 → zero-tax vouchers in Tally. This rescues rates printed like
+    "CGST @ 9%", "SGST 2.5%", or "IGST 18%" and amount lines like
+    "CGST ₹152.35", applying per-item tax splits when rates are found.
+    Returns list of human-readable warnings.
+    """
+    warnings = []
+    items = invoice.get("items") or []
+    if not items:
+        return warnings
+
+    def _rate(pattern):
+        m = re.search(pattern, raw_text, re.IGNORECASE)
+        if m:
+            try:
+                return float(m.group(1))
+            except ValueError:
+                return None
+        return None
+
+    cgst_rate = _rate(r'\bCGST\s*(?:@|:)?\s*(\d+(?:\.\d+)?)\s*%')
+    sgst_rate = _rate(r'\bSGST\s*(?:@|:)?\s*(\d+(?:\.\d+)?)\s*%')
+    igst_rate = _rate(r'\bIGST\s*(?:@|:)?\s*(\d+(?:\.\d+)?)\s*%')
+
+    # If a printed GST rate exists (e.g. 18% = CGST 9 + SGST 9), apply it to any
+    # item stuck at 0% so the voucher carries correct tax.
+    missing_tax_items = [it for it in items
+                         if (it.get("gst_rate") or 0) == 0
+                         and (it.get("taxable") or 0) > 0]
+    if missing_tax_items and (cgst_rate or igst_rate):
+        total_rate = (cgst_rate or 0) + (sgst_rate or 0) + (igst_rate or 0)
+        if total_rate > 0:
+            for it in missing_tax_items:
+                it["gst_rate"] = round(total_rate, 2)
+            warnings.append(
+                f"tax rates rescued from printed labels: CGST {cgst_rate or 0}% "
+                f"+ SGST {sgst_rate or 0}% + IGST {igst_rate or 0}% → {total_rate}%")
+
+    # Amount rescue: "CGST ₹X.XX" / "CGST: X.XX" lines — set on the largest item
+    # only if no per-item CGST amount was extracted anywhere.
+    any_cgst_amt = any(it.get("cgst_amt") for it in items)
+    any_sgst_amt = any(it.get("sgst_amt") for it in items)
+    if not any_cgst_amt:
+        m_ca = re.search(r'\bCGST\s*(?:Amt|Amount|₹|Rs\.?|:)?\.?\s*([\d,]+\.\d{2})', raw_text, re.IGNORECASE)
+        if m_ca:
+            val = float(m_ca.group(1).replace(",", ""))
+            if val > 0:
+                biggest = max(items, key=lambda i: i.get("taxable") or 0)
+                biggest["cgst_amt"] = round(val, 2)
+                warnings.append(f"CGST amount rescued from printed line: ₹{val:.2f}")
+                any_cgst_amt = True
+    if not any_sgst_amt:
+        m_sa = re.search(r'\bSGST\s*(?:Amt|Amount|₹|Rs\.?|:)?\.?\s*([\d,]+\.\d{2})', raw_text, re.IGNORECASE)
+        if m_sa:
+            val = float(m_sa.group(1).replace(",", ""))
+            if val > 0:
+                biggest = max(items, key=lambda i: i.get("taxable") or 0)
+                biggest["sgst_amt"] = round(val, 2)
+                warnings.append(f"SGST amount rescued from printed line: ₹{val:.2f}")
+    return warnings
+
+
+def correct_gstin_ocr(raw_text: str, gstin: str) -> str:
+    """Repair OCR-corrupted GSTINs by swapping ambiguous glyphs (1<->Z, 0<->O,
+    8<->B, I<->1, S<->5) one position at a time until Mod-36 validates.
+
+    Retail invoices (Retail Store/Retail Brand) routinely OCR '27AAAAA0000A1Z5' as
+    '27AACCV1Z26HIZE' (1/Z swap) — a model can only output the characters in
+    its input, so the correction must happen in post-processing.
+    """
+    from gst_validator import validate_gstin
+    g = (gstin or "").strip().upper()
+    if len(g) != 15 or validate_gstin(g)["valid"]:
+        return g
+    AMBIG = {"0": "O", "O": "0", "1": "Z", "Z": "1", "I": "1", "1": "I",
+             "8": "B", "B": "8", "S": "5", "5": "S", "2": "Z", "Z": "2"}
+    seen = {g}
+    stack = [g]
+    while stack:
+        cand = stack.pop()
+        for i, ch in enumerate(cand):
+            for alt in (AMBIG.get(ch, ""),):
+                if not alt or alt == ch:
+                    continue
+                new = cand[:i] + alt + cand[i + 1:]
+                if new in seen:
+                    continue
+                seen.add(new)
+                if validate_gstin(new)["valid"]:
+                    return new
+                stack.append(new)
+    return g
+
+
+def rescale_invoice_value(raw_text: str, invoice: dict) -> None:
+    """Rescue the invoice total from OCR when the model grabbed a charges line
+    (0.0) instead of the real total. Handles 'INR.484.03', 'Rs. 484.03',
+    '₹484.03' after 'Invoice Value :' / 'Grand Total :'."""
+    m = re.search(
+        r"(?:Total\s*)?(?:Invoice\s*value|Invoice\s*Value|Grand\s*Total|Total\s*Amount|"
+        r"Net\s*Payable)\s*\(?[^)]*\)?\s*[:.\-]?\s*"
+        r"(?:INR|Rs\.?|₹)?\s*([0-9]+(?:,[0-9]{3})*(?:\.[0-9]{2})?)",
+        raw_text, re.IGNORECASE)
+    if m:
+        try:
+            val = float(m.group(1).replace(",", ""))
+        except ValueError:
+            return
+        items = invoice.get("items") or []
+        if val > 0 and (invoice.get("total") is None or invoice["total"] <= 0
+                        or abs(invoice["total"] - val) > 0.01):
+            invoice["total"] = round(val, 2)
 
 
 def process_invoice_image(img_bgr: np.ndarray, record_to_dedup: bool = False) -> dict:
@@ -246,6 +368,13 @@ def process_invoice_image(img_bgr: np.ndarray, record_to_dedup: bool = False) ->
         if m_gst:
             invoice["gstin_supplier"] = m_gst.group(1)
 
+    # GSTIN OCR-correction: swap ambiguous glyphs (1<->Z, 0<->O, 8<->B...) until
+    # Mod-36 validates. Retail Store/Retail Brand OCR'd '27AAAAA0000A1Z5' as '27AACCV1Z26HIZE'.
+    if invoice.get("gstin_supplier"):
+        corrected = correct_gstin_ocr(raw_full_text, invoice["gstin_supplier"])
+        if corrected != invoice["gstin_supplier"]:
+            invoice["gstin_supplier"] = corrected
+
     # Invoice No fallback
     if not invoice.get("invoice_no"):
         m_corp = re.search(r'\b([0-9]{4,6}[A-Z]{2}[0-9]{6,12})\b', raw_full_text)
@@ -255,6 +384,18 @@ def process_invoice_image(img_bgr: np.ndarray, record_to_dedup: bool = False) ->
             m_inv = re.search(r'(?:Invoice\s*Number|Invoice\s*No|vekte\s*Murder|Bill\s*No)[:\s\-]+([A-Za-z0-9\-\/]{4,25})', raw_full_text, re.IGNORECASE)
             if m_inv:
                 invoice["invoice_no"] = m_inv.group(1).strip()
+            else:
+                # Letter-prefixed bill numbers (Retail Store "BI2608...", Amazon "IN-...") —
+                # the v9 model and the digit-led regex both miss these.
+                m_alpha = re.search(r'\b([A-Z]{2,4}\-?\d{6,14})\b', raw_full_text)
+                if m_alpha:
+                    cand = m_alpha.group(1)
+                    low = cand.lower()
+                    if not any(k in low for k in ("gstin", "hsn", "sac", "cgst",
+                                                  "sgst", "igst", "total", "qty",
+                                                  "rate", "date", "invoice",
+                                                  "bill", "tax")):
+                        invoice["invoice_no"] = cand
 
     # Invoice Date fallback
     if not invoice.get("date"):
@@ -280,8 +421,18 @@ def process_invoice_image(img_bgr: np.ndarray, record_to_dedup: bool = False) ->
         if it.get("hsn") == "998422":
             it["desc"] = "Broadband Service"
 
+    # v10 rescue pass: the model on retail layouts (Retail Store) can leave
+    # gst_rate=0 / missing CGST/SGST amounts / grab a charges 0.0 as TOTAL.
+    # These post-processors pull the printed tax rates + amounts and the real
+    # invoice value out of the raw OCR text. (rescue_tax_from_raw_text uses
+    # per-item tax splits; rescale_invoice_value accepts 'INR.484.03'.)
+    tax_warnings = rescue_tax_from_raw_text(raw_full_text, invoice)
+    rescale_invoice_value(raw_full_text, invoice)
+    if tax_warnings:
+        invoice.setdefault("warnings", []).extend(tax_warnings)
+
     # Explicit invoice value search (e.g. Total Invoice value (in figure) 471.00)
-    exp_m = re.search(r'(?:Total\s*)?Invoice\s*value(?:\s*\([^)]*\))?[:\-\s]*([0-9,]+\.[0-9]{2})', raw_full_text, re.IGNORECASE)
+    exp_m = re.search(r'(?:Total\s*)?Invoice\s*value(?:[\s(]*[^)]*\)\s*)?[:.\-\s]*([0-9,]+\.\d{2})', raw_full_text, re.IGNORECASE)
     if exp_m:
         explicit_val = float(exp_m.group(1).replace(",", ""))
         if invoice.get("total") is None or abs(invoice["total"] - explicit_val) > 0.01:
@@ -1114,7 +1265,42 @@ class MobilePwaHandler(BaseHTTPRequestHandler):
 
     def do_POST(self):
         parsed = urlparse(self.path)
-        if parsed.path == "/api/scan":
+        if parsed.path == "/api/tally":
+            # POST the canonical import envelope (build_import output) to a
+            # TallyPrime :9000 endpoint with the exact Content-Type Tally expects.
+            # Fixes the APK's "Unknown Request" — the app's native builder was
+            # sending `<?xml?>` + missing <REQUESTDESC>, which Tally rejects.
+            content_len = int(self.headers.get("Content-Length", 0))
+            body = self.rfile.read(content_len).decode("utf-8")
+            try:
+                data = json.loads(body)
+                host = data.get("host", "127.0.0.1")
+                port = int(data.get("port", 9000))
+                tally_xml = data.get("tally_xml", "")
+                if not tally_xml:
+                    raise ValueError("missing tally_xml in request body")
+                if "<ENVELOPE>" not in tally_xml:
+                    # Raw voucher/XML without envelope → wrap it correctly
+                    tally_xml = envelope(tally_xml, data.get("company", ""))
+                from tally_client import post_xml, parse_result
+                resp = post_xml(tally_xml, host=host, port=port, timeout=data.get("timeout", 30))
+                result = parse_result(resp)
+                result["raw_response"] = resp
+                result["ok"] = bool(result["created"] or result["altered"]) and not result["errors"]
+                resp_bytes = json.dumps(result).encode("utf-8")
+                self.send_response(200)
+                self.send_header("Content-Type", "application/json")
+                self.send_header("Content-Length", str(len(resp_bytes)))
+                self.end_headers()
+                self.wfile.write(resp_bytes)
+            except Exception as e:
+                err_bytes = json.dumps({"error": str(e)}).encode("utf-8")
+                self.send_response(502)
+                self.send_header("Content-Type", "application/json")
+                self.send_header("Content-Length", str(len(err_bytes)))
+                self.end_headers()
+                self.wfile.write(err_bytes)
+        elif parsed.path == "/api/scan":
             content_len = int(self.headers.get("Content-Length", 0))
             body = self.rfile.read(content_len).decode("utf-8")
             try:

@@ -790,6 +790,8 @@
 
     // State
     let currentImageSrc = 'samples/GST_Invoice_04_Pharma_MultiRate_Batches.png';
+    let pdfPageImages = [];   // multi-page PDF: one dataURL per rendered page
+    let pdfPageLabels = [];   // per-page score label (for potential tab titles)
     let currentParsedData = null;
     let sampleFixtures = null;
     let cameraMediaStream = null;
@@ -1301,14 +1303,64 @@
         document.getElementById('statusText').textContent = '⚡ Rendering PDF Document...';
         const arrayBuf = await file.arrayBuffer();
         const pdf = await pdfjsLib.getDocument({ data: arrayBuf }).promise;
-        const page = await pdf.getPage(1);
-        const viewport = page.getViewport({ scale: 2.0 });
-        const canvas = document.createElement('canvas');
-        canvas.width = viewport.width;
-        canvas.height = viewport.height;
-        const ctx = canvas.getContext('2d');
-        await page.render({ canvasContext: ctx, viewport: viewport }).promise;
-        currentImageSrc = canvas.toDataURL('image/jpeg', 0.92);
+        // Multi-page PDF support (v10 fix): render EVERY page, then pick the best.
+        // Retail invoices (Retail Store/Retail Brand) split header-only page 1 from the items/
+        // tax/total page 2 — scanning only page 1 produced "TAX INVOICE" as buyer
+        // and zero tax. Now we render all pages, auto-select the page with the
+        // most invoice-completeness, and let the user switch pages and re-scan.
+        pdfPageImages = [];
+        pdfPageLabels = [];
+        let bestScore = -1, bestIdx = 0;
+        for (let p = 1; p <= pdf.numPages; p++) {
+          const pg = await pdf.getPage(p);
+          const viewport = pg.getViewport({ scale: 2.0 });
+          const canvas = document.createElement('canvas');
+          canvas.width = viewport.width;
+          canvas.height = viewport.height;
+          const ctx = canvas.getContext('2d');
+          await pg.render({ canvasContext: ctx, viewport: viewport }).promise;
+          const dataUrl = canvas.toDataURL('image/jpeg', 0.92);
+          pdfPageImages.push(dataUrl);
+          // Lightweight text-layer scoring (fast, no OCR): invoice-bearing page
+          // has GSTIN + monetary/tax markers; header-only page scores lower.
+          let score = 0;
+          try {
+            const tc = await pg.getTextContent();
+            const txt = tc.items.map(it => it.str || '').join(' ');
+            if (/GSTIN|GST\s*Registration/i.test(txt)) score += 2;
+            if (/CGST|SGST|IGST/i.test(txt)) score += 5;
+            if (/HSN|SAC/i.test(txt)) score += 3;
+            if (/Invoice\s*(Value|Total)|Grand\s*Total|Total\s*Tax/i.test(txt)) score += 4;
+            if (/Taxable|QTY|Quantity|Rate/i.test(txt)) score += 2;
+            const amtMatches = txt.match(/(?:₹|Rs\.?|INR)\s*[\d,]+\.\d{2}/gi) || [];
+            score += Math.min(amtMatches.length, 3);
+            pdfPageLabels.push(`Page ${p} (score ${score})`);
+          } catch (err) {
+            pdfPageLabels.push(`Page ${p}`);
+          }
+          if (score > bestScore) { bestScore = score; bestIdx = p - 1; }
+        }
+        currentImageSrc = pdfPageImages[bestIdx] || pdfPageImages[0];
+        // Render page tabs (only if >1 page)
+        const pageTabs = document.getElementById('pdfPageTabs');
+        if (pageTabs && pdf.numPages > 1) {
+          pageTabs.innerHTML = '';
+          pdfPageImages.forEach((_, i) => {
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'page-tab' + (i === bestIdx ? ' active' : '');
+            btn.textContent = `Page ${i + 1}`;
+            btn.onclick = async () => {
+              currentImageSrc = pdfPageImages[i];
+              document.getElementById('previewImg').src = currentImageSrc;
+              document.getElementById('zoomBadge').textContent = `📄 PDF Page ${i + 1}`;
+              pageTabs.querySelectorAll('.page-tab').forEach(b => b.classList.remove('active'));
+              btn.classList.add('active');
+              executeScan();
+            };
+            pageTabs.appendChild(btn);
+          });
+        }
       } else {
         const reader = new FileReader();
         reader.onload = (ev) => {
