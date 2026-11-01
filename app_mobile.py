@@ -42,12 +42,16 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 STATIC_DIR = os.path.join(BASE_DIR, "static")
 DOCS_DIR = os.path.join(BASE_DIR, "docs")
 
-# Use fine-tuned v9 model
-ONNX_PATH = os.path.join(BASE_DIR, "smoke_run_v9", "model_int8.onnx")
+# Use the privacy-scrubbed v10 model first; retain older models only as fallbacks.
+ONNX_PATH = os.path.join(BASE_DIR, "smoke_run_v10", "model_int8.onnx")
+if not os.path.exists(ONNX_PATH):
+    ONNX_PATH = os.path.join(BASE_DIR, "smoke_run_v9", "model_int8.onnx")
 if not os.path.exists(ONNX_PATH):
     ONNX_PATH = os.path.join(BASE_DIR, "smoke_run_v8", "model_int8.onnx")
 
-LABEL2ID_PATH = os.path.join(BASE_DIR, "smoke_run_v9", "label2id.json")
+LABEL2ID_PATH = os.path.join(BASE_DIR, "smoke_run_v10", "label2id.json")
+if not os.path.exists(LABEL2ID_PATH):
+    LABEL2ID_PATH = os.path.join(BASE_DIR, "smoke_run_v9", "label2id.json")
 if not os.path.exists(LABEL2ID_PATH):
     LABEL2ID_PATH = os.path.join(BASE_DIR, "smoke_run_v8", "label2id.json")
 

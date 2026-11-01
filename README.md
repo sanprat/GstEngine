@@ -19,7 +19,7 @@
 
 * **iPhone (iOS Safari)**: Open link in Safari → Tap **Share** (⎋) → **"Add to Home Screen"** (⊞) for full-screen camera app with custom icon.
 * **Android (Chrome)**: Tap **"Install App"** to add to your app drawer and home screen.
-* **Instant 1-Tap Real Invoices**: Test live extractions for Retailer Sample, Cosmetics Sample, Cosmetics Sample, and Electronics Sample bills.
+* **Instant 1-Tap Invoice Tests**: Test live extractions with synthetic retailer, cosmetics, and electronics examples.
 * **Camera & File Uploads**: Real-time WebRTC camera viewfinder, native camera snapshot, and client-side PDF document rendering.
 * **Zero Backend Required**: Runs client-side OCR and Indian GST statutory reconciliation directly in-browser with optional LayoutLM v9 neural edge backend.
 * **Tally XML Direct Export**: Instant one-click download of TallyPrime-compliant purchase vouchers.

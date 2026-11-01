@@ -100,7 +100,7 @@ GT_META = {
         "date_raw": "23-11-2025",
         "buyer_raw": ["TestBuyer", "TestBuyer", "Buyer"],
         "items": [
-            {"desc_kw": ["vivo", "Tax", "56"], "hsn": "85171300", "total": "12752.00"}
+            {"desc_kw": ["electronics", "Tax", "56"], "hsn": "85171300", "total": "12752.00"}
         ],
         "grand_total": "12752.00"
     },
