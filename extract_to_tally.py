@@ -19,7 +19,7 @@ from gst_validator import validate_invoice, STATE_CODES
 from tally_xml import build_import, envelope
 from invoice_dedup import InvoiceDeduplicator
 
-# normalise state names ("MAHARASTRA" typo on the real Zepto invoice -> Maharashtra)
+# normalise state names ("MAHARASTRA" typo on a real retail invoice -> Maharashtra)
 STATE_NAME_FIX = {
     "MAHARASTRA": "MAHARASHTRA", "MAHARASHTRA": "MAHARASHTRA",
     "KARNATAKA": "KARNATAKA", "DELHI": "DELHI", "MUMBAI": "MAHARASHTRA",
@@ -33,8 +33,7 @@ def field_spans(record):
 
     Proper state machine: S- gives a single-token span; B- opens a span that
     consumes following I-/E- tokens of the SAME field; a lone B- with no
-    following E- (single-word entity, e.g. OCR-merged "Retail Brand RETAIL LIMITED
-    (trading as Retail Store)" labeled B-SELLER_NAME) still closes as [i, i]; stray
+    following E- (single-word entity, e.g. OCR-merged multi-word seller label) still closes as [i, i]; stray
     I-/E- without a B- are skipped (malformed predictions must not corrupt).
     """
     spans = []
@@ -86,7 +85,7 @@ HEADER_STOPWORDS = {"No","Description","Unit","MRP/RSP","HSN","Qty","Product","R
                     "/Coupons","Value","₹","/UTGST","/UT","GSTIN:","FSSAI:"}
 
 def row_groups(record, spans):
-    """Anchor item rows by HSN y-position (Zepto/Flipkart/Amazon tables). Rows:
+    """Anchor item rows by HSN y-position (e-commerce tables). Rows:
     name_range = reading-order token interval before the anchor; value tokens are
     assigned by nearest anchor within a y-window (keeps footer subtotals out).
     HSN-less fee rows (e.g. 'Handling Fee') become pseudo-rows anchored on QUANTITY."""
@@ -104,7 +103,7 @@ def row_groups(record, spans):
         if not any(abs(y - ay) < 45 for _, ay, _ in anchors):
             anchors.append((a, y, False))
     if not anchors:
-        # HSN-less layout (e.g. Amazon marketplace-fee page): anchor on value fields
+        # HSN-less layout (e.g. marketplace-fee page): anchor on value fields
         for fname in ("UNIT_PRICE", "TAXABLE_VALUE", "TOTAL"):
             for a, b, f in spans:
                 if f == fname:
@@ -125,7 +124,7 @@ def row_groups(record, spans):
 # ---- Field-level post-processing guards (v10 fix, Nov 2026) ----
 # The v9 model occasionally labels prominent document titles as BUYER_NAME
 # (e.g. "TAX INVOICE" on retail layouts it never saw), leaves invoice numbers
-# missing on letter-prefixed bill numbers (Retail Store "BI2608..."), and can pick a
+# missing on letter-prefixed bill numbers ("BI2608..."), and can pick a
 # PLACE_OF_SUPPLY state that contradicts the seller GSTIN state code. These
 # helpers are pure post-processing: reject boilerplate, regex-rescue fields the
 # model missed, and flag state-code conflicts instead of silently trusting.
@@ -171,8 +170,8 @@ _GSTIN_STRICT = r"\d{2}[A-Z]{5}\d{4}[A-Z][1-9A-Z]Z[0-9A-Z]"
 def find_valid_gstin(text: str) -> str:
     """OCR-tolerant GSTIN search: find 15-char alnum candidates in raw OCR text,
     try ambiguous-glyph corrections (1<->Z, 0<->O, I<->1...) and return the
-    first Mod-36-valid one. Retail OCR routinely corrupts '27AAAAA0000A1Z5'
-    into '27AACCV1Z26HIZE' — the strict regex alone will never match that.
+    first Mod-36-valid one. Retail OCR routinely corrupts a real GSTIN
+    into the OCR-garbled GSTIN — the strict regex alone will never match that.
     """
     from gst_validator import validate_gstin
     text = (text or "").upper()
@@ -188,8 +187,8 @@ def correct_gstin_ocr(gstin: str) -> str:
     """Repair OCR-corrupted GSTINs by swapping ambiguous glyphs (1<->Z, 0<->O,
     8<->B, I<->1, S<->5, 2<->Z) one position at a time until Mod-36 validates.
 
-    Retail invoices (Retail Store/Retail Brand) routinely OCR '27AAAAA0000A1Z5' as
-    '27AACCV1Z26HIZE' (1/Z swap) — the model can only output the characters
+    Retail invoices (big-box retail layout) routinely OCR-rotate '1' as 'Z' in GSTINs
+    the OCR-garbled GSTIN (1/Z swap) — the model can only output the characters
     present in its input, so the correction happens in post-processing.
     """
     from gst_validator import validate_gstin
@@ -332,7 +331,7 @@ def record_to_invoice(record: dict) -> dict:
     pos_names = get("PLACE_OF_SUPPLY")
     # Buyer: take the FIRST span that is not document-title/address boilerplate.
     # v10 model can emit B-BUYER_NAME on "Invoice No:" AND S-BUYER_NAME on the
-    # real name ("Buyer Name") — naive [0] picked the wrong one.
+    # real name (example data) — naive [0] picked the wrong one.
     buyer_name = [b for b in get("BUYER_NAME") if not is_buyer_boilerplate(b)]
 
     warnings = []
@@ -342,7 +341,7 @@ def record_to_invoice(record: dict) -> dict:
         if fb:
             buyer_name = [fb]
             warnings.append("BUYER_NAME recovered by regex fallback")
-    # Invoice number fallback: model missed letter-prefixed bill numbers (Retail Store BI2608..)
+    # Invoice number fallback: model missed letter-prefixed bill numbers (BI2608..)
     if not inv_no:
         fb_inv = invoice_no_regex_fallback(words)
         if fb_inv:
@@ -350,7 +349,7 @@ def record_to_invoice(record: dict) -> dict:
             warnings.append("INVOICE_NUMBER recovered by regex fallback")
     # Seller GSTIN: accept the model's span ONLY if it looks like a GSTIN;
     # otherwise OCR-tolerant search over the raw words (handles 'IRN DETAILS:'
-    # mislabels AND OCR-corrupted '27AACCV1Z26HIZE' -> real GSTIN).
+    # mislabels AND OCR-corrupted the OCR-garbled GSTIN -> real GSTIN).
     raw_all = " ".join(str(w) for w in words)
     if seller_gstin and re.fullmatch(_GSTIN_STRICT, seller_gstin[0].upper()):
         pass  # model span is GSTIN-shaped; use it
@@ -467,7 +466,7 @@ def record_to_invoice(record: dict) -> dict:
             "total": round(line_total, 2) if line_total is not None else None,
         })
         # v10 tax fill (in-loop: cgst_rate/sgst_rate/igst_rate are row-scoped):
-        # retail layouts (Retail Store) yield taxable + rates but miss split AMOUNTS.
+        # retail layouts yield taxable + rates but miss split AMOUNTS.
         # Compute the intra-state split when intra rates were found and no
         # amounts exist. Never overwrite model amounts, never invent CGST/SGST
         # when only IGST was charged.
@@ -479,7 +478,7 @@ def record_to_invoice(record: dict) -> dict:
                 items[-1]["sgst_amt"] = round(taxable * half / 100.0, 2)
             elif igst_rate:  # inter-state: full IGST
                 items[-1]["igst_amt"] = round(taxable * igst_rate / 100.0, 2)
-        # Reverse fill: amounts found but NO rate spans (Retail Store labels CGST/
+        # Reverse fill: amounts found but NO rate spans (retail labels CGST/
         # SGST amounts, not rates) -> infer gst_rate from amounts for Tally.
         elif (taxable and gst_rate == 0 and (cgst_amt or sgst_amt)):
             tax_amt = (cgst_amt or 0.0) + (sgst_amt or 0.0)
@@ -498,7 +497,7 @@ def record_to_invoice(record: dict) -> dict:
         if f == "TOTAL" and (a, b) not in row_totals:
             grand_totals.append(clean_amount(span_text(record, a, b)))
 
-    # Page-level tax summary (Retail Store bottom block): sum CGST/SGST/IGST amounts
+    # Page-level tax summary (bottom block): sum CGST/SGST/IGST amounts
     # NOT attached to any item row. Plausibility guard: a tax span whose value
     # is >= 40% of total taxable is the mislabeled grand-total column
     # (e.g. 484.03 labeled CGST) — GST max rate is 28%, so taxes are always
@@ -547,7 +546,7 @@ def record_to_invoice(record: dict) -> dict:
             continue
 
     # Numeric-date fallback: model missed INVOICE_DATE but the OCR text has
-    # dd/mm/yyyy (Retail Store '23/08/2026'). Skip totals/gstin numbers via context.
+    # dd/mm/yyyy ('23/08/2026'). Skip totals/gstin numbers via context.
     if not date_out:
         m_num = re.search(
             r"\b(0?[1-9]|[12][0-9]|3[01])[/\-.]\s?(0?[1-9]|1[0-2])[/\-.]\s?(20[2-9][0-9])\b",

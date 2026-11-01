@@ -1304,7 +1304,7 @@
         const arrayBuf = await file.arrayBuffer();
         const pdf = await pdfjsLib.getDocument({ data: arrayBuf }).promise;
         // Multi-page PDF support (v10 fix): render EVERY page, then pick the best.
-        // Retail invoices (Retail Store/Retail Brand) split header-only page 1 from the items/
+        // Retail invoices (big-box retail) split header-only page 1 from the items/
         // tax/total page 2 — scanning only page 1 produced "TAX INVOICE" as buyer
         // and zero tax. Now we render all pages, auto-select the page with the
         // most invoice-completeness, and let the user switch pages and re-scan.

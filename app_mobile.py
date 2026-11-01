@@ -139,7 +139,7 @@ def extract_buyer_name_rule(raw_text: str, nlp_buyer: str = "") -> str:
 def rescue_tax_from_raw_text(raw_text: str, invoice: dict) -> list:
     """Recover CGST/SGST/IGST rates & amounts the model missed (e.g. retail layouts).
 
-    Retail invoices (Retail Store/Retail Brand style) often leave the v9 model with
+    Retail invoices (big-box retail style) often leave the v9 model with
     gst_rate=0 → zero-tax vouchers in Tally. This rescues rates printed like
     "CGST @ 9%", "SGST 2.5%", or "IGST 18%" and amount lines like
     "CGST ₹152.35", applying per-item tax splits when rates are found.
@@ -205,8 +205,8 @@ def correct_gstin_ocr(raw_text: str, gstin: str) -> str:
     """Repair OCR-corrupted GSTINs by swapping ambiguous glyphs (1<->Z, 0<->O,
     8<->B, I<->1, S<->5) one position at a time until Mod-36 validates.
 
-    Retail invoices (Retail Store/Retail Brand) routinely OCR '27AAAAA0000A1Z5' as
-    '27AACCV1Z26HIZE' (1/Z swap) — a model can only output the characters in
+    Retail invoices (big-box retail) routinely OCR a real GSTIN as
+    the OCR-garbled GSTIN (1/Z swap) — a model can only output the characters in
     its input, so the correction must happen in post-processing.
     """
     from gst_validator import validate_gstin
@@ -369,7 +369,7 @@ def process_invoice_image(img_bgr: np.ndarray, record_to_dedup: bool = False) ->
             invoice["gstin_supplier"] = m_gst.group(1)
 
     # GSTIN OCR-correction: swap ambiguous glyphs (1<->Z, 0<->O, 8<->B...) until
-    # Mod-36 validates. Retail Store/Retail Brand OCR'd '27AAAAA0000A1Z5' as '27AACCV1Z26HIZE'.
+    # Mod-36 validates. big-box retail OCR'd a real GSTIN as the OCR-garbled GSTIN.
     if invoice.get("gstin_supplier"):
         corrected = correct_gstin_ocr(raw_full_text, invoice["gstin_supplier"])
         if corrected != invoice["gstin_supplier"]:
@@ -385,7 +385,7 @@ def process_invoice_image(img_bgr: np.ndarray, record_to_dedup: bool = False) ->
             if m_inv:
                 invoice["invoice_no"] = m_inv.group(1).strip()
             else:
-                # Letter-prefixed bill numbers (Retail Store "BI2608...", Amazon "IN-...") —
+                # Letter-prefixed bill numbers (big-box "BI2608...", e-commerce "IN-...") —
                 # the v9 model and the digit-led regex both miss these.
                 m_alpha = re.search(r'\b([A-Z]{2,4}\-?\d{6,14})\b', raw_full_text)
                 if m_alpha:
@@ -421,7 +421,7 @@ def process_invoice_image(img_bgr: np.ndarray, record_to_dedup: bool = False) ->
         if it.get("hsn") == "998422":
             it["desc"] = "Broadband Service"
 
-    # v10 rescue pass: the model on retail layouts (Retail Store) can leave
+    # v10 rescue pass: the model on retail layouts can leave
     # gst_rate=0 / missing CGST/SGST amounts / grab a charges 0.0 as TOTAL.
     # These post-processors pull the printed tax rates + amounts and the real
     # invoice value out of the raw OCR text. (rescue_tax_from_raw_text uses
