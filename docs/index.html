@@ -650,10 +650,10 @@
 
       <!-- Seller Name & GSTIN -->
       <span class="field-label-small">SELLER &amp; GSTIN</span>
-      <div class="seller-title" id="tvSellerName">Sample Seller Company</div>
+      <div class="seller-title" id="tvSellerName">—</div>
       <div class="d-flex align-items-center gap-2 mt-1">
-        <span class="gstin-code" id="tvSellerGstin">29AAAAA0000A1Z5</span>
-        <span class="badge-mod36" id="tvGstinBadge">✅ Valid (Mod-36)</span>
+        <span class="gstin-code" id="tvSellerGstin">—</span>
+        <span class="badge-mod36" id="tvGstinBadge" style="display:none">✅ Valid (Mod-36)</span>
       </div>
 
       <div class="divider-line"></div>
@@ -662,29 +662,29 @@
       <div class="grid-2x2">
         <div>
           <span class="field-label-small">INVOICE NO</span>
-          <div class="grid-value" id="tvInvoiceNo">INV-000123456</div>
+          <div class="grid-value" id="tvInvoiceNo">—</div>
         </div>
         <div>
           <span class="field-label-small">DATE</span>
-          <div class="grid-value" id="tvInvoiceDate">13-10-2026</div>
+          <div class="grid-value" id="tvInvoiceDate">—</div>
         </div>
         <div>
           <span class="field-label-small">BUYER</span>
-          <div class="grid-value" id="tvBuyerName" style="color: var(--brand-primary);">SAMPLE BUYER</div>
+          <div class="grid-value" id="tvBuyerName" style="color: var(--brand-primary);">—</div>
         </div>
         <div>
           <span class="field-label-small">HSN / SAC</span>
-          <div class="grid-value" id="tvHsnCode">998422</div>
+          <div class="grid-value" id="tvHsnCode">—</div>
         </div>
       </div>
 
       <!-- NLP Extracted Line Items Container -->
       <div class="nlp-container" id="nlpContainer">
-        <div class="nlp-header" id="nlpHeader">📦 LINE ITEMS (1 ITEM - NLP EXTRACTED)</div>
+        <div class="nlp-header" id="nlpHeader">📦 LINE ITEMS</div>
         <div id="nlpItemsList">
           <div class="nlp-item-box">
-            <div class="nlp-item-title">Company (in Comments)</div>
-            <div class="nlp-item-subtitle">HSN: 998422 | Qty: 1 | Total: ₹471.00</div>
+            <div class="nlp-item-title">—</div>
+            <div class="nlp-item-subtitle">HSN: — | Qty: — | Total: —</div>
           </div>
         </div>
       </div>
@@ -695,20 +695,20 @@
       <div>
         <div class="financial-row">
           <span class="text-secondary">Taxable Amount:</span>
-          <strong id="tvTaxableAmount">₹399.15</strong>
+          <strong id="tvTaxableAmount">—</strong>
         </div>
         <div class="financial-row">
           <span class="text-secondary">Taxes (CGST + SGST + IGST):</span>
-          <strong id="tvTaxBreakdown">CGST: ₹35.92 | SGST: ₹35.92</strong>
+          <strong id="tvTaxBreakdown">—</strong>
         </div>
 
         <div class="grand-total-box">
           <span class="grand-total-title">Grand Total:</span>
-          <span class="grand-total-val" id="tvGrandTotal">₹471.00</span>
+          <span class="grand-total-val" id="tvGrandTotal">—</span>
         </div>
 
         <div class="math-reconciled" id="tvMathReconciliation">
-          ✅ Tax Math Reconciled (Taxable + Taxes = Total)
+          —
         </div>
       </div>
 
@@ -1034,7 +1034,7 @@
           }
         }
       }
-      if (!sellerName) sellerName = "Sample Seller Company";
+      if (!sellerName) sellerName = "";
 
       // 2. GSTIN & Statutory PAN Reconstruction
       let gstin = "";
@@ -1055,7 +1055,7 @@
         const chk = calculateGstCheckDigit(base14);
         gstin = base14 + chk;
       }
-      if (!gstin) gstin = "29AAAAA0000A1Z5";
+      if (!gstin) gstin = "";
 
       const isChecksumValid = isValidGstChecksum(gstin);
 
@@ -1070,19 +1070,23 @@
         const fallback = rawText.match(/\b(SampleCustomer\s+Has+an|Test\s+Buyer|Test\s+User|CustomerTwo|Customer\s+One)\b/i);
         if (fallback) buyerName = fallback[1];
       }
-      if (!buyerName) buyerName = "SAMPLE BUYER";
+      if (!buyerName) buyerName = "";
       buyerName = buyerName.replace(/([A-Za-z])\1{2,}/g, "$1$1").toUpperCase();
 
-      // 4. Invoice Number (Corporate state-coded or standard)
+      // 4. Invoice Number. Prefer explicit labels, then common retail formats.
       let invNo = "";
       const corpMatch = rawText.match(/\b([0-9]{4,6}[A-Z]{2}[0-9]{6,12})\b/);
       if (corpMatch) {
         invNo = corpMatch[1];
       } else {
-        const invMatch = rawText.match(/(?:Invoice|Inv|Bill)\s*(?:Number|No|#)?[:\s#\-]+([A-Za-z0-9\-\/]{4,25})/i);
+        const invMatch = rawText.match(/(?:Invoice|Inv\.?|Bill|Tax\s*Invoice|GST\s*Invoice)\s*(?:Number|No|#)?\.?[:\s#\-]+([A-Za-z0-9][A-Za-z0-9\-/]{3,24})/i);
         if (invMatch && /\d/.test(invMatch[1])) invNo = invMatch[1].trim();
       }
-      if (!invNo) invNo = "INV-000123456";
+      // Letter-prefixed retail/corporate numbers, e.g. SLA147383520681, BI2608...
+      if (!invNo) {
+        const alphaMatch = rawText.match(/\b([A-Z]{2,4}\d{6,14})\b/);
+        if (alphaMatch) invNo = alphaMatch[1];
+      }
 
       // 5. Date
       let invDate = "";
@@ -1093,13 +1097,13 @@
         const m = months[dmy[2].toLowerCase().slice(0, 3)] || "10";
         invDate = `${d}-${m}-${dmy[3]}`;
       } else {
-        const numD = rawText.match(/\b([0-3]?[0-9])[\/\-\.]([0-1]?[0-9])[\/\-\.]([0-9]{4})\b/);
+        const numD = rawText.match(/\b([0-3]?[0-9])[\/\-\.\s]([0-1]?[0-9])[\/\-\.\s](20[2-9][0-9])\b/);
         if (numD) invDate = `${numD[1].padStart(2, "0")}-${numD[2].padStart(2, "0")}-${numD[3]}`;
       }
-      if (!invDate) invDate = "13-10-2026";
+      // Never invent a date. Missing extraction must remain visibly missing.
 
       // 6. HSN/SAC
-      let hsn = "998422";
+      let hsn = "";
       const hsnMatch = rawText.match(/(?:HSN|SAC)[^0-9\n\r]{0,30}[:\/\-\s]*([0-9]{6,8})/i);
       if (hsnMatch) hsn = hsnMatch[1];
 
@@ -1112,11 +1116,11 @@
         if (!isNaN(val) && val > 0) nums.push(val);
       }
 
-      let taxable = 399.15;
-      let cgst = 35.92;
-      let sgst = 35.92;
+      let taxable = 0;
+      let cgst = 0;
+      let sgst = 0;
       let igst = 0.0;
-      let grandTotal = 471.00;
+      let grandTotal = 0;
       let isBalanced = false;
 
       // 3-term row balancer: nums[i] + nums[j] + nums[l] == target
@@ -1192,11 +1196,16 @@
     function displayExtractionResults(inv, xml, durationMs) {
       document.getElementById('cardResults').style.display = 'block';
 
-      document.getElementById('tvSellerName').textContent = inv.party_name || 'Sample Seller Company';
-      document.getElementById('tvSellerGstin').textContent = inv.gstin_supplier || '29AAAAA0000A1Z5';
+      document.getElementById('tvSellerName').textContent = inv.party_name || '—';
+      document.getElementById('tvSellerGstin').textContent = inv.gstin_supplier || '—';
       
       const gstinBadge = document.getElementById('tvGstinBadge');
-      if (inv.is_gstin_valid !== false) {
+      gstinBadge.style.display = 'inline-flex';
+      if (!inv.gstin_supplier && inv.is_gstin_valid === undefined) {
+        gstinBadge.textContent = '⚠️ Not detected';
+        gstinBadge.style.background = '#F1F5F9';
+        gstinBadge.style.color = '#64748B';
+      } else if (inv.is_gstin_valid !== false) {
         gstinBadge.textContent = '✅ Valid (Mod-36)';
         gstinBadge.style.background = '#DCFCE7';
         gstinBadge.style.color = '#15803D';
@@ -1206,20 +1215,15 @@
         gstinBadge.style.color = '#B45309';
       }
 
-      document.getElementById('tvInvoiceNo').textContent = inv.invoice_no || 'INV-000123456';
-      document.getElementById('tvInvoiceDate').textContent = inv.date || '13-10-2026';
-      document.getElementById('tvBuyerName').textContent = inv.buyer_name || 'SAMPLE BUYER';
-      document.getElementById('tvHsnCode').textContent = inv.items?.[0]?.hsn || inv.hsn_code || '998422';
+      document.getElementById('tvInvoiceNo').textContent = inv.invoice_no || '—';
+      document.getElementById('tvInvoiceDate').textContent = inv.date || '—';
+      document.getElementById('tvBuyerName').textContent = inv.buyer_name || '—';
+      document.getElementById('tvHsnCode').textContent = inv.items?.[0]?.hsn || inv.hsn_code || '—';
 
       // NLP Line Items
       const nlpList = document.getElementById('nlpItemsList');
       nlpList.innerHTML = '';
-      const items = inv.items && inv.items.length > 0 ? inv.items : [{
-        desc: 'Company (in Comments)',
-        hsn: '998422',
-        qty: 1,
-        total: inv.total || 471.00
-      }];
+      const items = inv.items && inv.items.length > 0 ? inv.items : [];
 
       document.getElementById('nlpHeader').textContent = `📦 LINE ITEMS (${items.length} ITEM${items.length > 1 ? 'S' : ''} - NLP EXTRACTED)`;
       items.forEach(it => {
@@ -1227,25 +1231,25 @@
         box.className = 'nlp-item-box';
         box.innerHTML = `
           <div class="nlp-item-title">${it.desc || 'Product Item'}</div>
-          <div class="nlp-item-subtitle">HSN: ${it.hsn || '998422'} | Qty: ${it.qty || 1} | Total: ₹${(it.total || it.taxable || 0).toFixed(2)}</div>
+          <div class="nlp-item-subtitle">HSN: ${it.hsn || '—'} | Qty: ${it.qty || '—'} | Total: ₹${(it.total || it.taxable || 0).toFixed(2)}</div>
         `;
         nlpList.appendChild(box);
       });
 
       // Financials
-      const taxable = inv.info ? (inv.info.computed_taxable || 399.15) : 399.15;
-      const cgst = inv.info ? (inv.info.computed_cgst || 35.92) : 35.92;
-      const sgst = inv.info ? (inv.info.computed_sgst || 35.92) : 35.92;
+      const taxable = inv.info ? (inv.info.computed_taxable || 0) : 0;
+      const cgst = inv.info ? (inv.info.computed_cgst || 0) : 0;
+      const sgst = inv.info ? (inv.info.computed_sgst || 0) : 0;
       const igst = inv.info ? (inv.info.computed_igst || 0.0) : 0.0;
-      const total = inv.total || 471.00;
+      const total = inv.total || 0;
 
-      document.getElementById('tvTaxableAmount').textContent = '₹' + taxable.toFixed(2);
+      document.getElementById('tvTaxableAmount').textContent = taxable ? '₹' + taxable.toFixed(2) : '—';
       let taxStr = `CGST: ₹${cgst.toFixed(2)} | SGST: ₹${sgst.toFixed(2)}`;
       if (igst > 0) taxStr += ` | IGST: ₹${igst.toFixed(2)}`;
       document.getElementById('tvTaxBreakdown').textContent = taxStr;
 
-      document.getElementById('tvGrandTotal').textContent = '₹' + total.toFixed(2);
-      document.getElementById('tvMathReconciliation').textContent = '✅ Tax Math Reconciled (Taxable + Taxes = Total)';
+      document.getElementById('tvGrandTotal').textContent = total ? '₹' + total.toFixed(2) : '—';
+      document.getElementById('tvMathReconciliation').textContent = total ? '✅ Tax Math Reconciled (Taxable + Taxes = Total)' : '⚠️ Values not detected';
 
       const statusText = document.getElementById('statusText');
       statusText.textContent = `✅ 100% Neural & Spatial Verified (Processed in ${durationMs}ms)`;
@@ -1257,12 +1261,12 @@
 
     // 5. Tally XML Builder
     function buildTallyXml(inv) {
-      const party = inv.party_name || 'Sample Seller Company';
-      const invNo = inv.invoice_no || 'INV-000123456';
-      const total = inv.total || 471.00;
-      const taxable = inv.info ? (inv.info.computed_taxable || 399.15) : 399.15;
-      const cgst = inv.info ? (inv.info.computed_cgst || 35.92) : 35.92;
-      const sgst = inv.info ? (inv.info.computed_sgst || 35.92) : 35.92;
+      const party = inv.party_name || '';
+      const invNo = inv.invoice_no || '';
+      const total = inv.total || 0;
+      const taxable = inv.info ? (inv.info.computed_taxable || 0) : 0;
+      const cgst = inv.info ? (inv.info.computed_cgst || 0) : 0;
+      const sgst = inv.info ? (inv.info.computed_sgst || 0) : 0;
 
       return `<ENVELOPE>
   <HEADER>
@@ -1276,7 +1280,7 @@
       <REQUESTDATA>
         <TALLYMESSAGE xmlns:UDF="TallyUDF">
           <VOUCHER VCHTYPE="Purchase" ACTION="Create">
-            <DATE>${(inv.date || '13-10-2026').replace(/-/g, '')}</DATE>
+            <DATE>${(inv.date || '').replace(/-/g, '')}</DATE>
             <VOUCHERTYPENAME>Purchase</VOUCHERTYPENAME>
             <VOUCHERNUMBER>${invNo}</VOUCHERNUMBER>
             <PARTYLEDGERNAME>${party}</PARTYLEDGERNAME>
@@ -1413,10 +1417,10 @@
       document.getElementById('tvInvoiceDate').textContent = '-';
       document.getElementById('tvBuyerName').textContent = '-';
       document.getElementById('tvHsnCode').textContent = '-';
-      document.getElementById('tvTaxableAmount').textContent = '₹0.00';
-      document.getElementById('tvTaxBreakdown').textContent = '₹0.00';
-      document.getElementById('tvGrandTotal').textContent = '₹0.00';
-      document.getElementById('tvMathReconciliation').textContent = 'Math: -';
+      document.getElementById('tvTaxableAmount').textContent = '—';
+      document.getElementById('tvTaxBreakdown').textContent = '—';
+      document.getElementById('tvGrandTotal').textContent = '—';
+      document.getElementById('tvMathReconciliation').textContent = '—';
       document.getElementById('nlpItemsList').innerHTML = '';
       document.getElementById('statusText').textContent = '● Ready to scan';
       document.getElementById('statusText').style.color = '#475569';
