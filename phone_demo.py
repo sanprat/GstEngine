@@ -172,8 +172,10 @@ from fastapi import FastAPI, UploadFile, File, Form
 from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn, io
+import phone_capture
 
 app = FastAPI(title="GST Invoice Scanner Demo")
+app.include_router(phone_capture.router)
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
 
 HTML = """<!doctype html>
@@ -330,6 +332,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--port", type=int, default=8000)
     args = ap.parse_args()
+    phone_capture.print_pairing(args.port)
     print(f"Serving GST scanner demo on 0.0.0:{args.port} (tunnel: cloudflared tunnel --url http://localhost:{args.port})")
     uvicorn.run(app, host="0.0.0.0", port=args.port)
 
