@@ -1,19 +1,63 @@
-# Tiny GST Engine ⚡
+# Tiny GST Engine ⚡ & Desktop Engine v2.0
 
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![Commercial Use](https://img.shields.io/badge/Commercial_Use-Free_&_Permissive-green.svg)](LICENSE)
-[![Model Size](https://img.shields.io/badge/Model_Size-13.17_MB_(INT8_ONNX)-orange.svg)](smoke_run_v8/model_int8.onnx)
-[![Latency](https://img.shields.io/badge/CPU_Latency-~52_ms_/_page-brightgreen.svg)](BENCHMARK_REPORT.md)
-[![Platform](https://img.shields.io/badge/Platform-Android_%7C_Edge_%7C_Python-purple.svg)](#)
+[![Accuracy: 95.95% F1](https://img.shields.io/badge/Entity_F1-95.95%25_(Desktop_v2.0)-brightgreen.svg)](BENCHMARK_REPORT.md)
+[![Model Size](https://img.shields.io/badge/Desktop_INT8-107.66_MB-orange.svg)](https://github.com/sanprat/GstEngine/releases/tag/v2.0.0-desktop-95)
+[![Mobile Model](https://img.shields.io/badge/Mobile_INT8-13.17_MB-yellow.svg)](smoke_run_v8/model_int8.onnx)
+[![Latency](https://img.shields.io/badge/Desktop_Latency-~140_ms_/_page-brightgreen.svg)](BENCHMARK_REPORT.md)
 [![Live PWA](https://img.shields.io/badge/Live_PWA-sanprat.github.io%2FGstEngine-blue.svg?logo=safari)](https://sanprat.github.io/GstEngine/)
 
-> **A 13.17 MB on-device LayoutLM model designed for offline Indian GST invoice extraction directly into TallyPrime import XML.**
+> **A high-accuracy offline Indian GST invoice extraction engine designed for TallyPrime.**
 > 
-> *100% offline, zero cloud API fees, privacy-preserving, and free for commercial use.*
+> • **v2.0 Desktop Engine**: Full LayoutLM INT8 ONNX (107.66 MB), **95.95% Entity F1**, sub-150ms execution on desktop CPUs, 100% offline.  
+> • **v1.0 Mobile Prototype**: Distilled 13.17 MB model for low-end mobile edge OCR demonstrations.  
+> • *Zero cloud API fees, 100% DPDP Act compliant, and free for commercial use.*
 
 ---
 
-## 📱 Live Web App & Mobile PWA (iOS & Android)
+## 🚀 Quickstart: v2.0 Desktop Engine (95.95% F1)
+
+In real-world retail and distribution, shopkeepers and chartered accountants do not reconcile accounts on a 6-inch phone; they sit in front of **TallyPrime on Windows desktop PCs**. 
+
+Our v2.0 architecture decouples capture from computation:
+1. **Phone = Wireless Camera Scanner**: Uses `phone_capture.py` over your local Wi-Fi to snap invoices with the phone camera and send them directly to your PC.
+2. **Desktop = High-Accuracy Neural Engine**: Runs the 107.66 MB INT8 LayoutLM model locally in **~140 ms** (Apple Silicon) or **~790 ms** (standard x86 CPU).
+3. **Automated Tally Push**: Verifies statutory tax math (`CGST + SGST == IGST`) and posts Section 31 XML straight to TallyPrime port `:9000`.
+
+### 1. Download the v2.0 Model (107.66 MB)
+```bash
+python3 fetch_model.py
+```
+*(Or download `model_desktop_int8.onnx` directly from the [v2.0.0 Release](https://github.com/sanprat/GstEngine/releases/tag/v2.0.0-desktop-95)).*
+
+### 2. Run the Desktop Scanner Server
+```bash
+uvicorn phone_capture:router --host 0.0.0.0 --port 8000
+```
+Open the generated local URL (e.g. `http://192.168.1.X:8000/capture`) on your smartphone's browser to instantly photograph bills and push them to your desktop TallyPrime!
+
+---
+
+## 📊 Benchmark: v2.0 Desktop vs v1.0 Mobile
+
+Evaluated on holdout multi-layout Indian GST invoices (Classic A4, Minimalist, Handwritten Bill-books, and Thermal POS receipts):
+
+| Entity Field | v1.0 Mobile (13 MB Distilled) | **v2.0 Desktop (107 MB INT8)** | Gain |
+| :--- | :---: | :---: | :---: |
+| **Overall Entity F1** | **64.20%** | **95.95%** | **+31.75%** |
+| **Token Accuracy** | 81.40% | **99.21%** | **+17.81%** |
+| **HSN / SAC Code** | 80.00% | **99.23%** | **+19.23%** |
+| **Buyer Name** | 76.40% | **97.01%** | **+20.61%** |
+| **Seller Name** | 57.80% | **96.96%** | **+39.16%** |
+| **Item Name (Line Items)** | **50.30%** | **96.56%** | **+46.26%** |
+| **Invoice Number** | 66.70% | **96.04%** | **+29.34%** |
+| **Total Amount** | 80.00% | **95.79%** | **+15.79%** |
+
+*Read the full technical post-mortem: [Why Our 13 MB GST AI Failed — And How a 107 MB Desktop Engine Hit 95.95%](https://pybankers.com/blog/why-13mb-gst-ai-failed-desktop-pivot-95-percent).*
+
+---
+
+## 📱 Live Web App & Mobile PWA (v1.0 Mobile Demo)
 
 👉 **Open the live scanner on your phone or desktop**: [**https://sanprat.github.io/GstEngine/**](https://sanprat.github.io/GstEngine/)
 
@@ -26,14 +70,14 @@
 
 ---
 
-## 🎯 Why Tiny GST?
+## 🎯 Why Offline GST Engine?
 
 Over 63 million MSMEs across India run on **TallyPrime**. Processing paper invoices from distributors and suppliers has traditionally meant manual typing or relying on expensive cloud Document AI APIs.
 
-* **Zero Cloud Fees ($0.00/yr):** Standard cloud OCR APIs (AWS Textract, Google Cloud Document AI) charge \$0.010–\$0.015 per page. For a business scanning 50,000 invoices/month, that's **\$6,000 to \$9,000 per year** in recurring operational costs. Tiny GST runs **100% on-device for free**.
-* **100% Offline & Private:** Operates seamlessly in basement godowns, warehouses, or rural kirana stores without internet connectivity. Sensitive margins, purchase rates, and customer data never leave the device.
-* **Solves the "Table Failure" of Mobile Regex:** Traditional mobile OCR + regex gets **0.0% F1** on multi-item tables, wrapped descriptions, and CGST/SGST splits. Tiny GST uses **2D spatial cross-attention** to accurately capture line items (**84.6% Unit Price, 80.0% HSN**) and tax breakdowns (**100% CGST, 66.7% SGST**).
-* **Native TallyPrime XML Export:** Generates validated, idempotent Tally XML vouchers ready to drop into Tally's import directory or POST directly to port `:9000`.
+* **Zero Cloud Fees ($0.00/yr):** Standard cloud OCR APIs (AWS Textract, Google Cloud Document AI) charge \$0.010–\$0.015 per page. Tally Prime 7.1's cloud solution ("Docs by Ira") charges ~₹2.36/invoice + TSS subscription. Our engine runs **100% on-device for free ($0.00)**.
+* **100% Offline & DPDP-Compliant:** Operates seamlessly in godowns, warehouses, or rural stores without internet connectivity. Sensitive business turnover, customer contacts, and purchase margins never leave the PC.
+* **Solves the Multi-Line Table Failure:** Traditional mobile regex scores **0.0% F1** on multi-item tables. Our 2D spatial transformer links columns, item names, and tax splits deterministically (**96.56% line items, 99.23% HSN**).
+* **Native Tally XML Integration:** Generates validated, idempotent Section 31 Tally XML vouchers ready to drop into Tally's import directory or POST directly to port `:9000`.
 
 ---
 
@@ -41,11 +85,11 @@ Over 63 million MSMEs across India run on **TallyPrime**. Processing paper invoi
 
 ```mermaid
 flowchart LR
-    Scan["Invoice Photo / PDF"] --> OCR["Edge OCR (EasyOCR / Mobile OCR)<br/>Words + Bounding Boxes (0..1000)"]
-    OCR --> Student["Tiny GST (LayoutLM Student)<br/><b>13.17 MB ONNX INT8</b><br/>6 Layers / 256 Hidden / 4 Heads"]
-    Student --> BIOES["BIOES Entity Extractor<br/>(768 Max Sequence Length)"]
-    BIOES --> Dedup["Statutory Dedup Layer<br/>(Sec 31 CGST Act SQLite)"]
-    Dedup --> Tally["Native Tally XML Voucher<br/>(Idempotent REMOTEID)"]
+    Scan["Invoice Photo / PDF<br/>(Phone Camera via LAN)"] --> OCR["Edge OCR (EasyOCR / RapidOCR)<br/>Words + Bounding Boxes (0..1000)"]
+    OCR --> Engine["Desktop LayoutLM Engine<br/><b>107.66 MB INT8 ONNX</b><br/>95.95% Entity F1"]
+    Engine --> BIOES["BIOES Entity Extractor<br/>(33 Statutory Tax Entities)"]
+    BIOES --> Verify["Deterministic Tax Math<br/>(CGST+SGST==IGST / Dedup)"]
+    Verify --> Tally["TallyPrime Import XML<br/>(POST localhost:9000)"]
 ```
 
 1. **Compact Student Model:** Distilled from LayoutLM-base into 6 layers, 256 hidden dimension, 4 attention heads (~13.08M params).

@@ -1,0 +1,13 @@
+name = "tinygst-portal"
+compatibility_date = "2026-11-01"
+pages_build_output_dir = "./public"
+
+# Cloudflare R2 Bucket Binding
+# Name of the bucket created in your Cloudflare dashboard
+[[r2_buckets]]
+binding = "MY_BUCKET"
+bucket_name = "gst-scanner-assets"
+
+[vars]
+# Administrator passcode for upload / manage access (can also be set in Cloudflare dashboard)
+ADMIN_PASSCODE = "pybankers2026"

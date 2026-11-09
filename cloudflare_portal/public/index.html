@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tiny GST Engine — Offline Edge AI Invoice Scanner & Models</title>
+  <meta name="description" content="Download Tiny GST Engine Android APK and offline AI ONNX models for fast edge invoice scanning and TallyPrime integration.">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+  <header class="navbar">
+    <div class="nav-container">
+      <div class="brand">
+        <span class="brand-icon">🧾</span>
+        <div>
+          <span class="brand-title">Tiny GST Engine</span>
+          <span class="brand-domain">app.pybankers.com</span>
+        </div>
+      </div>
+      <nav class="nav-tabs">
+        <button id="tab-downloads" class="tab-btn active" onclick="switchTab('downloads')">📲 Downloads</button>
+        <button id="tab-admin" class="tab-btn" onclick="switchTab('admin')">🔒 Admin Portal</button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="main-container">
+
+    <!-- ================= DOWNLOADS SECTION ================= -->
+    <section id="section-downloads" class="tab-content active">
+      <!-- Hero Banner -->
+      <div class="hero">
+        <div class="badge-pill">🚀 Powered by Cloudflare Edge & R2 • Zero Lag</div>
+        <h1>Offline Edge AI Invoice Scanner</h1>
+        <p class="hero-subtext">
+          100% offline, privacy-first GST invoice scanning with on-device INT8 neural token classification and instant TallyPrime XML export over Wi-Fi.
+        </p>
+      </div>
+
+      <!-- Release Download Grid -->
+      <div class="download-grid">
+        <!-- Card 1: Android APK -->
+        <div class="card highlight-card">
+          <div class="card-tag">Latest Android Release</div>
+          <div class="card-header">
+            <div class="file-icon apk-icon">🤖</div>
+            <div class="file-meta">
+              <h2>tinygstengine_v10.apk</h2>
+              <div class="tags">
+                <span class="chip">v10 Multi-Page</span>
+                <span class="chip">47.6 MB</span>
+                <span class="chip chip-success">ARM64 Native</span>
+              </div>
+            </div>
+          </div>
+          <p class="card-desc">
+            Complete Android application with Google ML Kit OCR pipeline, Microsoft ONNX Mobile Runtime, and Section 31 statutory reconciliation engine.
+          </p>
+          <div class="card-actions">
+            <a id="btn-download-apk" href="/api/download/tinygstengine_v10.apk" class="btn btn-primary" download>
+              <span>📲 Download APK (v10)</span>
+              <span class="btn-sub">High-Speed Edge Download</span>
+            </a>
+            <button class="btn btn-secondary" onclick="copyLink('/api/download/tinygstengine_v10.apk')">📋 Copy Direct Link</button>
+          </div>
+        </div>
+
+        <!-- Card 2: ONNX Model -->
+        <div class="card">
+          <div class="card-tag">Neural Model Weights</div>
+          <div class="card-header">
+            <div class="file-icon model-icon">🧠</div>
+            <div class="file-meta">
+              <h2>model_int8.onnx</h2>
+              <div class="tags">
+                <span class="chip">v10 INT8 Quantized</span>
+                <span class="chip">13.83 MB</span>
+                <span class="chip chip-info">~52ms Latency</span>
+              </div>
+            </div>
+          </div>
+          <p class="card-desc">
+            Optimized INT8 Quantized Transformer model for invoice token classification, line-item extraction, and tax reconciliation.
+          </p>
+          <div class="card-actions">
+            <a id="btn-download-model" href="/api/download/model_int8.onnx" class="btn btn-primary" download>
+              <span>🧠 Download Model (v10)</span>
+              <span class="btn-sub">Ready for ONNX Runtime</span>
+            </a>
+            <button class="btn btn-secondary" onclick="copyLink('/api/download/model_int8.onnx')">📋 Copy Link</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phone QR Code Quick Scan Section -->
+      <div class="qr-container">
+        <div class="qr-box">
+          <canvas id="qr-canvas"></canvas>
+          <div class="qr-label">Point phone camera to download directly</div>
+        </div>
+        <div class="qr-info">
+          <h3>📱 Scan from your Android Phone</h3>
+          <p>Sitting at your laptop? Open your phone camera or QR scanner, point it at this QR code, and your phone will download <strong>tinygstengine_v10.apk</strong> directly in 2–3 seconds.</p>
+          <div class="install-steps">
+            <div class="step"><span class="step-num">1</span> Scan or tap Download</div>
+            <div class="step"><span class="step-num">2</span> Tap "Install" (Allow unknown apps if prompted)</div>
+            <div class="step"><span class="step-num">3</span> Open & scan GST invoices offline!</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Features Checklist -->
+      <div class="features-grid">
+        <div class="feature-item">
+          <div class="feat-icon">📑</div>
+          <h4>Multi-Page Invoice Merging</h4>
+          <p>Header from Page 1 fuses with line items and tax breakdown on Page 2+ into a single unified voucher.</p>
+        </div>
+        <div class="feature-item">
+          <div class="feat-icon">⚡</div>
+          <h4>Zero Cloud Latency</h4>
+          <p>100% on-device ML Kit OCR & ONNX inference. No internet connection required to scan.</p>
+        </div>
+        <div class="feature-item">
+          <div class="feat-icon">📊</div>
+          <h4>Instant Tally LAN Push</h4>
+          <p>Generates canonical TallyPrime purchase vouchers and pushes directly to Port 9000 over Wi-Fi.</p>
+        </div>
+        <div class="feature-item">
+          <div class="feat-icon">🔒</div>
+          <h4>Privacy First</h4>
+          <p>Invoices stay strictly on your phone. Zero cloud logging or third-party telemetry.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= ADMIN PORTAL SECTION ================= -->
+    <section id="section-admin" class="tab-content">
+      <!-- Passcode Login Box (shown when unauthenticated) -->
+      <div id="admin-auth-box" class="auth-box">
+        <div class="auth-icon">🔐</div>
+        <h2>Admin Portal Access</h2>
+        <p>Enter the administrator passcode to upload or manage models and APKs.</p>
+        <form id="auth-form" onsubmit="handleAdminLogin(event)">
+          <div class="input-group">
+            <input type="password" id="admin-passcode" placeholder="Enter Admin Passcode" required autocomplete="current-password">
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">Unlock Admin Portal</button>
+          <div id="auth-error" class="error-msg"></div>
+        </form>
+      </div>
+
+      <!-- Admin Dashboard (shown when authenticated) -->
+      <div id="admin-dashboard" class="admin-dashboard" style="display: none;">
+        <div class="admin-header">
+          <div>
+            <h2>Cloudflare R2 Asset Manager</h2>
+            <p>Upload new APKs or ONNX model weights directly to Cloudflare edge storage.</p>
+          </div>
+          <button class="btn btn-danger btn-sm" onclick="handleAdminLogout()">🚪 Logout</button>
+        </div>
+
+        <!-- Upload Zone -->
+        <div class="upload-card">
+          <h3>📤 Upload New Release / Model</h3>
+          <div class="drop-zone" id="drop-zone">
+            <div class="drop-icon">☁️</div>
+            <p>Drag and drop your <strong>.apk</strong> or <strong>.onnx</strong> file here</p>
+            <span class="drop-or">or</span>
+            <label class="btn btn-secondary btn-file">
+              Browse File <input type="file" id="file-input" style="display: none;" onchange="handleFileSelect(event)">
+            </label>
+            <div id="selected-file-info" class="selected-file-info"></div>
+          </div>
+
+          <!-- Target File Name Selector -->
+          <div class="upload-options">
+            <label>Save as file name:</label>
+            <div class="radio-group">
+              <label><input type="radio" name="target-name-type" value="tinygstengine_v10.apk" checked onchange="toggleCustomFileName(false)"> tinygstengine_v10.apk (Latest APK)</label>
+              <label><input type="radio" name="target-name-type" value="model_int8.onnx" onchange="toggleCustomFileName(false)"> model_int8.onnx (Latest Model)</label>
+              <label><input type="radio" name="target-name-type" value="custom" onchange="toggleCustomFileName(true)"> Custom filename</label>
+            </div>
+            <input type="text" id="custom-file-name" placeholder="e.g. tinygstengine_v11.apk" style="display: none;" class="custom-input">
+          </div>
+
+          <!-- Upload Progress -->
+          <div id="upload-progress-container" class="progress-container" style="display: none;">
+            <div class="progress-bar">
+              <div id="upload-progress-fill" class="progress-fill" style="width: 0%;"></div>
+            </div>
+            <div id="upload-progress-text" class="progress-text">0%</div>
+          </div>
+
+          <button id="btn-upload" class="btn btn-primary btn-block" onclick="startUpload()" disabled>Upload to Cloudflare R2</button>
+          <div id="upload-status" class="status-msg"></div>
+        </div>
+
+        <!-- Current Files List -->
+        <div class="files-card">
+          <div class="files-header">
+            <h3>📦 Files in R2 Bucket</h3>
+            <button class="btn btn-secondary btn-sm" onclick="loadBucketFiles()">🔄 Refresh</button>
+          </div>
+          <div id="bucket-files-list" class="files-table-container">
+            <div class="loading">Loading files from Cloudflare R2...</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <p>© 2026 PyBankers • <strong>app.pybankers.com</strong> • Powered by Cloudflare Pages & R2 Edge Storage</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

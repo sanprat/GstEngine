@@ -1,0 +1,8 @@
+{
+  "model": "microsoft/layoutlm-base-uncased",
+  "parameters": 112653345,
+  "best_entity_f1": 0.8348,
+  "fp32_size_mb": 427.73,
+  "int8_size_mb": 107.66,
+  "onnx_cpu_latency_ms": 864.27
+}

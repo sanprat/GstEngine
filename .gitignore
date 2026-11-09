@@ -19,3 +19,9 @@ HANDOFF.md
 current_handoff.md
 .agent_memory/
 smoke_run_*/eval_predictions.jsonl
+
+# Large model binaries (>100MB) — distributed via GitHub Releases
+desktop_models/*.onnx
+cloudflare_portal/initial_assets/
+
+

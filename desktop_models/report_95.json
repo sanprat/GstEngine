@@ -1,0 +1,30 @@
+{
+  "model": "microsoft/layoutlm-base-uncased",
+  "parameters": 112653345,
+  "dataset_size": 1357,
+  "training_time_s": 1921.35,
+  "peak_entity_f1": 0.9595,
+  "fp32_size_mb": 427.73,
+  "int8_size_mb": 107.66,
+  "onnx_cpu_latency_ms": 792.13,
+  "best_metrics": {
+    "token_acc": 0.9921455832734112,
+    "macro_field_f1": 0.8028863147392062,
+    "entity_f1": 0.9595176571920758,
+    "entity_precision": 0.940084388185654,
+    "entity_recall": 0.9797713280562885,
+    "per_field_f1": {
+      "": 0.0,
+      "BUYER_NAME": 0.9701230228471002,
+      "HSN_SAC": 0.9923469387755102,
+      "INVOICE_DATE": 0.9,
+      "INVOICE_NUMBER": 0.9603960396039604,
+      "ITEM_NAME": 0.9655638082376772,
+      "QUANTITY": 0.3703703703703704,
+      "SELLER_GSTIN": 0.8363636363636363,
+      "SELLER_NAME": 0.9696,
+      "TOTAL": 0.9578947368421052,
+      "UNIT_PRICE": 0.9090909090909091
+    }
+  }
+}
